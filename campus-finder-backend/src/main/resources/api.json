@@ -1,0 +1,588 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "校园失物招领平台 API",
+    "description": "校园失物招领平台后端RESTful API接口文档",
+    "contact": {
+      "name": "Campus Finder Team",
+      "email": "support@campusfinder.com"
+    },
+    "license": {
+      "name": "MIT License",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "开发环境服务器"
+    }
+  ],
+  "security": [
+    {
+      "Bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "认证管理",
+      "description": "用户注册、登录、退出等认证相关接口"
+    },
+    {
+      "name": "用户管理",
+      "description": "个人资料管理相关接口"
+    }
+  ],
+  "paths": {
+    "/api/user/profile": {
+      "get": {
+        "tags": [
+          "用户管理"
+        ],
+        "summary": "获取个人资料",
+        "description": "获取当前登录用户的详细资料",
+        "operationId": "getProfile",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultUserProfileDTO"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "用户管理"
+        ],
+        "summary": "更新个人资料",
+        "description": "更新当前登录用户的资料信息",
+        "operationId": "updateProfile",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultUserProfileDTO"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/user/password": {
+      "put": {
+        "tags": [
+          "用户管理"
+        ],
+        "summary": "修改密码",
+        "description": "修改当前登录用户的密码",
+        "operationId": "changePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultVoid"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "认证管理"
+        ],
+        "summary": "用户注册",
+        "description": "支持用户名+密码注册，需要提供手机号",
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultAuthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/refresh": {
+      "post": {
+        "tags": [
+          "认证管理"
+        ],
+        "summary": "刷新Token",
+        "description": "使用RefreshToken换取新的AccessToken",
+        "operationId": "refreshToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultAuthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "认证管理"
+        ],
+        "summary": "退出登录",
+        "description": "使当前Token失效",
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "认证管理"
+        ],
+        "summary": "用户登录",
+        "description": "支持用户名或手机号登录",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultAuthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "tags": [
+          "认证管理"
+        ],
+        "summary": "获取当前用户信息",
+        "description": "获取已登录用户的基本信息",
+        "operationId": "getCurrentUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultAuthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ResultVoid": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "UpdateProfileRequest": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "昵称"
+          },
+          "avatar": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "头像URL"
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱"
+          },
+          "gender": {
+            "type": "integer",
+            "description": "性别：0-未知，1-男，2-女",
+            "format": "int32"
+          },
+          "phone": {
+            "pattern": "^1[3-9]\\d{9}$",
+            "type": "string",
+            "description": "手机号"
+          }
+        },
+        "description": "更新个人资料请求"
+      },
+      "ResultUserProfileDTO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserProfileDTO"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "UserProfileDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "昵称"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像"
+          },
+          "phone": {
+            "type": "string",
+            "description": "手机号"
+          },
+          "studentId": {
+            "type": "string",
+            "description": "学号"
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱"
+          },
+          "gender": {
+            "type": "integer",
+            "description": "性别",
+            "format": "int32"
+          },
+          "genderText": {
+            "type": "string",
+            "description": "性别描述"
+          },
+          "status": {
+            "type": "integer",
+            "description": "状态",
+            "format": "int32"
+          },
+          "lastLoginTime": {
+            "type": "string",
+            "description": "最后登录时间",
+            "format": "date-time"
+          },
+          "lastLoginIp": {
+            "type": "string",
+            "description": "最后登录IP"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          }
+        },
+        "description": "用户资料响应"
+      },
+      "ChangePasswordRequest": {
+        "required": [
+          "confirmPassword",
+          "newPassword",
+          "oldPassword"
+        ],
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string",
+            "description": "原密码"
+          },
+          "newPassword": {
+            "maxLength": 20,
+            "minLength": 6,
+            "type": "string",
+            "description": "新密码"
+          },
+          "confirmPassword": {
+            "type": "string",
+            "description": "确认新密码"
+          }
+        },
+        "description": "修改密码请求"
+      },
+      "RegisterRequest": {
+        "required": [
+          "confirmPassword",
+          "password",
+          "phone",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "maxLength": 50,
+            "minLength": 3,
+            "type": "string",
+            "description": "用户名",
+            "example": "zhangsan"
+          },
+          "password": {
+            "maxLength": 20,
+            "minLength": 6,
+            "type": "string",
+            "description": "密码",
+            "example": "Aa123456"
+          },
+          "confirmPassword": {
+            "type": "string",
+            "description": "确认密码",
+            "example": "Aa123456"
+          },
+          "phone": {
+            "pattern": "^1[3-9]\\d{9}$",
+            "type": "string",
+            "description": "手机号",
+            "example": "13800138000"
+          },
+          "studentId": {
+            "type": "string",
+            "description": "学号（可选）",
+            "example": "2021001234"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "昵称（可选）",
+            "example": "张三"
+          }
+        },
+        "description": "注册请求"
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "访问Token"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "刷新Token"
+          },
+          "tokenType": {
+            "type": "string",
+            "description": "Token类型"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "description": "过期时间（秒）",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "昵称"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像"
+          }
+        },
+        "description": "认证响应"
+      },
+      "ResultAuthResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AuthResponse"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "RefreshTokenRequest": {
+        "required": [
+          "refreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "RefreshToken",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        },
+        "description": "刷新Token请求"
+      },
+      "LoginRequest": {
+        "required": [
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "用户名/手机号",
+            "example": "zhangsan"
+          },
+          "password": {
+            "type": "string",
+            "description": "密码",
+            "example": "Aa123456"
+          }
+        },
+        "description": "登录请求"
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "请输入JWT Token，格式: Bearer {token}",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

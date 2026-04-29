@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" fill="none">
+  <defs>
+    <linearGradient id="authBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="50%" style="stop-color:#6c5ce7"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="600" height="800" fill="url(#authBg)"/>
+  <!-- Decorative shapes -->
+  <circle cx="500" cy="100" r="150" fill="#fff" opacity="0.03"/>
+  <circle cx="80" cy="600" r="200" fill="#fff" opacity="0.02"/>
+  <circle cx="550" cy="500" r="100" fill="#fff" opacity="0.04"/>
+  <circle cx="300" cy="750" r="120" fill="#fff" opacity="0.02"/>
+  <!-- Floating dots -->
+  <g opacity="0.08" fill="#fff">
+    <circle cx="100" cy="100" r="2"/>
+    <circle cx="200" cy="50" r="1.5"/>
+    <circle cx="350" cy="120" r="2.5"/>
+    <circle cx="480" cy="250" r="1.8"/>
+    <circle cx="50" cy="300" r="2"/>
+    <circle cx="150" cy="450" r="1.5"/>
+    <circle cx="520" cy="650" r="2.2"/>
+    <circle cx="300" cy="700" r="1.8"/>
+    <circle cx="450" cy="400" r="1.2"/>
+    <circle cx="80" cy="200" r="1.5"/>
+  </g>
+  <!-- Large subtle magnifying glass watermark -->
+  <g transform="translate(380, 200)" opacity="0.05">
+    <circle cx="60" cy="60" r="70" stroke="#fff" stroke-width="8" fill="none"/>
+    <line x1="110" y1="110" x2="170" y2="170" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <!-- Location pin watermark -->
+  <g transform="translate(120, 550)" opacity="0.04">
+    <path d="M0-40C22-40 40-22 40 0c0 30-40 55-40 55S-40 30-40 0c0-22 18-40 40-40z" fill="#fff"/>
+    <circle cx="0" cy="-5" r="14" fill="url(#authBg)"/>
+  </g>
+</svg>

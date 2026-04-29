@@ -1,0 +1,25 @@
+# IDE
+.idea/
+.vscode/
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Workspace
+.workbuddy/
+
+# Logs
+logs/
+
+# Uploads
+uploads/
+
+# Backend
+campus-finder-backend/target/
+
+# Scripts
+fix_script.py
+generate_assets.py
+verify_sizes.py

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" fill="none">
+  <defs>
+    <linearGradient id="sBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f9eb"/>
+      <stop offset="100%" style="stop-color:#e1f3d8"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="120" cy="100" r="80" fill="url(#sBg)"/>
+  <!-- Success checkmark circle -->
+  <circle cx="120" cy="90" r="30" fill="#67C23A" opacity="0.15"/>
+  <circle cx="120" cy="90" r="22" fill="#67C23A"/>
+  <!-- Checkmark -->
+  <path d="M110 90l6 6 14-14" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Sparkle decorations -->
+  <circle cx="88" cy="70" r="3" fill="#67C23A" opacity="0.3"/>
+  <circle cx="155" cy="80" r="2.5" fill="#67C23A" opacity="0.25"/>
+  <circle cx="100" cy="115" r="2" fill="#67C23A" opacity="0.2"/>
+  <!-- Text area below -->
+  <text x="120" y="155" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#67C23A" font-weight="500">Success</text>
+</svg>
