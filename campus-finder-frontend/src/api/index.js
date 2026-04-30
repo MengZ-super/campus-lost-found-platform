@@ -144,3 +144,5 @@ export const claimApi = {
     return request.post(`/lost/claim/${id}/review`, data)
   }
 }
+
+export { adminApi } from './admin'

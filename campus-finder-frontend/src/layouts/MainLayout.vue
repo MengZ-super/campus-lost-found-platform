@@ -12,17 +12,21 @@
           <el-icon><HomeFilled /></el-icon>
           <span>首页</span>
         </router-link>
-        <router-link to="/lost-found" class="sidebar-link" active-class="active">
+        <router-link to="/lost-found" class="sidebar-link" :class="{ active: route.path === '/lost-found' && route.query.type !== 'lost' }">
           <el-icon><Search /></el-icon>
           <span>失物招领</span>
         </router-link>
-        <router-link to="/lost-found?type=lost" class="sidebar-link" active-class="active">
+        <router-link to="/lost-found?type=lost" class="sidebar-link" :class="{ active: route.path === '/lost-found' && route.query.type === 'lost' }">
           <el-icon><Location /></el-icon>
           <span>寻物启事</span>
         </router-link>
         <router-link to="/lost-found/my-publish" class="sidebar-link" active-class="active">
           <el-icon><Document /></el-icon>
           <span>我的发布</span>
+        </router-link>
+        <router-link v-if="authStore.isAdmin" to="/admin/dashboard" class="sidebar-link admin-link" active-class="active">
+          <el-icon><Setting /></el-icon>
+          <span>管理后台</span>
         </router-link>
       </nav>
 
@@ -39,6 +43,7 @@
               <el-dropdown-item command="profile" :icon="User">个人资料</el-dropdown-item>
               <el-dropdown-item command="my-publish" :icon="Document">我的发布</el-dropdown-item>
               <el-dropdown-item command="my-claims" :icon="ChatDotRound">我的申请</el-dropdown-item>
+              <el-dropdown-item v-if="authStore.isAdmin" command="admin" :icon="Setting" divided>管理后台</el-dropdown-item>
               <el-dropdown-item command="logout" :icon="SwitchButton" divided>退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -58,14 +63,15 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores/auth'
-import { User, SwitchButton, Document, ChatDotRound, HomeFilled, Search, Location } from '@element-plus/icons-vue'
+import { User, SwitchButton, Document, ChatDotRound, HomeFilled, Search, Location, Setting } from '@element-plus/icons-vue'
 import logoImg from '@/assets/images/logo.png'
 import defaultAvatar from '@/assets/images/avatar-default.png'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 
 async function handleCommand(command) {
@@ -75,6 +81,8 @@ async function handleCommand(command) {
     router.push('/lost-found/my-publish')
   } else if (command === 'my-claims') {
     router.push('/lost-found/my-claims')
+  } else if (command === 'admin') {
+    router.push('/admin/dashboard')
   } else if (command === 'logout') {
     await ElMessageBox.confirm('确定要退出登录吗？', '提示', {
       confirmButtonText: '确定',

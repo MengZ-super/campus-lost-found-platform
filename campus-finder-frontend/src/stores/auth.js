@@ -11,6 +11,8 @@ export const useAuthStore = defineStore('auth', () => {
   const username = computed(() => userInfo.value?.username || '')
   const nickname = computed(() => userInfo.value?.nickname || username.value)
   const avatar = computed(() => userInfo.value?.avatar || '')
+  const role = computed(() => userInfo.value?.role || 'user')
+  const isAdmin = computed(() => role.value === 'admin')
 
   /** 设置 Tokens */
   function setTokens(access, refresh) {
@@ -29,20 +31,18 @@ export const useAuthStore = defineStore('auth', () => {
   /** 登录 */
   async function login(data) {
     const res = await authApi.login(data)
-    // 拦截器已返回 res.data，直接解构
-    const { accessToken: at, refreshToken: rt, userId, username: un, nickname: nn, avatar: av } = res
+    const { accessToken: at, refreshToken: rt, userId, username: un, nickname: nn, avatar: av, role: r } = res
     setTokens(at, rt)
-    setUserInfo({ userId, username: un, nickname: nn, avatar: av })
+    setUserInfo({ userId, username: un, nickname: nn, avatar: av, role: r || 'user' })
     return res
   }
 
   /** 注册 */
   async function register(data) {
     const res = await authApi.register(data)
-    // 拦截器已返回 res.data，直接解构
-    const { accessToken: at, refreshToken: rt, userId, username: un, nickname: nn, avatar: av } = res
+    const { accessToken: at, refreshToken: rt, userId, username: un, nickname: nn, avatar: av, role: r } = res
     setTokens(at, rt)
-    setUserInfo({ userId, username: un, nickname: nn, avatar: av })
+    setUserInfo({ userId, username: un, nickname: nn, avatar: av, role: r || 'user' })
     return res
   }
 
@@ -69,7 +69,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     accessToken, refreshToken, userInfo,
-    isLoggedIn, username, nickname, avatar,
+    isLoggedIn, username, nickname, avatar, role, isAdmin,
     setTokens, setUserInfo, login, register, logout, clearAuth
   }
 })

@@ -62,6 +62,11 @@ public class User implements Serializable {
     private Integer gender;
 
     /**
+     * 角色：user-普通用户，admin-管理员
+     */
+    private String role;
+
+    /**
      * 状态：0-禁用，1-正常
      */
     private Integer status;
@@ -106,5 +111,12 @@ public class User implements Serializable {
      */
     public boolean isNormal() {
         return this.status != null && this.status == 1;
+    }
+
+    /**
+     * 是否管理员
+     */
+    public boolean isAdmin() {
+        return "admin".equals(this.role);
     }
 }

@@ -49,7 +49,10 @@ public enum ResultCode {
     NOT_OWNER(40310, "无权操作此记录"),
     ALREADY_CLAIMED(40910, "该物品已被认领"),
     ALREADY_APPLIED(40911, "已提交过认领申请"),
-    CANNOT_CLAIM_OWN(40912, "不能认领自己发布的物品");
+    CANNOT_CLAIM_OWN(40912, "不能认领自己发布的物品"),
+
+    // 管理端
+    CATEGORY_IN_USE(40920, "该分类下还有物品，无法删除");
 
     private final int code;
     private final String message;

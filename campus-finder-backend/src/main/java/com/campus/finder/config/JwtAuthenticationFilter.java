@@ -61,21 +61,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // 解析Token获取用户信息
                 String username = jwtUtil.getUsernameFromToken(token);
                 Long userId = jwtUtil.getUserIdFromToken(token);
+                String role = jwtUtil.getRoleFromToken(token);
 
                 // 验证用户状态
                 User user = userService.checkUserStatus(userId);
+
+                // 根据角色设置权限
+                String authority = "admin".equals(role) ? "ROLE_ADMIN" : "ROLE_USER";
 
                 // 创建认证令牌
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 user.getUsername(),
                                 null,
-                                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
+                                Collections.singletonList(new SimpleGrantedAuthority(authority))
                         );
 
-                // 将用户ID存入details
+                // 将用户ID存入details（注意：后面会被WebAuthenticationDetails覆盖，getCurrentUserId需fallback）
                 authentication.setDetails(userId);
-
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 

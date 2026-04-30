@@ -87,10 +87,14 @@ async function handleLogin() {
 
   loading.value = true
   try {
-    await authStore.login(form)
+    const res = await authStore.login(form)
     ElMessage.success('登录成功')
-    const redirect = route.query.redirect || '/home'
-    router.push(redirect)
+    if (res.role === 'admin') {
+      router.push('/admin/dashboard')
+    } else {
+      const redirect = route.query.redirect || '/home'
+      router.push(redirect)
+    }
   } catch (err) {
     // 错误已由 request 拦截器处理
   } finally {

@@ -78,6 +78,7 @@ public class AuthService {
         user.setStudentId(request.getStudentId());
         user.setNickname(request.getNickname() != null ? request.getNickname() : request.getUsername());
         user.setStatus(1); // 正常状态
+        user.setRole("user");
 
         userService.save(user);
         log.info("用户注册成功: username={}, phone={}", user.getUsername(), user.getPhone());
@@ -184,8 +185,9 @@ public class AuthService {
      * 生成认证响应
      */
     private AuthResponse generateAuthResponse(User user) {
-        String accessToken = jwtUtil.generateAccessToken(user.getId(), user.getUsername());
-        String refreshToken = jwtUtil.generateRefreshToken(user.getId(), user.getUsername());
+        String role = user.getRole() != null ? user.getRole() : "user";
+        String accessToken = jwtUtil.generateAccessToken(user.getId(), user.getUsername(), role);
+        String refreshToken = jwtUtil.generateRefreshToken(user.getId(), user.getUsername(), role);
 
         // 存储RefreshToken到Redis
         redisTemplate.opsForValue().set(
@@ -204,6 +206,7 @@ public class AuthService {
                 .username(user.getUsername())
                 .nickname(user.getNickname())
                 .avatar(user.getAvatar())
+                .role(role)
                 .build();
     }
 

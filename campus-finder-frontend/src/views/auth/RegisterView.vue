@@ -118,8 +118,24 @@ const form = reactive({
 })
 
 const validateConfirmPwd = (rule, value, callback) => {
-  if (value !== form.password) {
+  if (!value) {
+    callback(new Error('请再次输入密码'))
+  } else if (value !== form.password) {
     callback(new Error('两次输入的密码不一致'))
+  } else {
+    callback()
+  }
+}
+
+const validatePassword = (rule, value, callback) => {
+  if (!value) {
+    callback(new Error('请输入密码'))
+  } else if (value.length < 6 || value.length > 20) {
+    callback(new Error('密码长度在 6-20 个字符'))
+  } else if (!/[a-zA-Z]/.test(value)) {
+    callback(new Error('密码必须包含字母'))
+  } else if (!/\d/.test(value)) {
+    callback(new Error('密码必须包含数字'))
   } else {
     callback()
   }
@@ -128,18 +144,23 @@ const validateConfirmPwd = (rule, value, callback) => {
 const rules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 50, message: '用户名长度在 3-50 个字符', trigger: 'blur' }
+    { min: 3, max: 50, message: '用户名长度在 3-50 个字符', trigger: 'blur' },
+    { pattern: /^[a-zA-Z0-9_]+$/, message: '用户名只能包含字母、数字和下划线', trigger: 'blur' }
   ],
   phone: [
     { required: true, message: '请输入手机号', trigger: 'blur' },
     { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }
   ],
+  studentId: [
+    { min: 5, max: 20, message: '学号长度在 5-20 个字符', trigger: 'blur' }
+  ],
+  nickname: [
+    { min: 1, max: 20, message: '昵称长度在 1-20 个字符', trigger: 'blur' }
+  ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 20, message: '密码长度在 6-20 个字符', trigger: 'blur' }
+    { validator: validatePassword, trigger: 'blur' }
   ],
   confirmPassword: [
-    { required: true, message: '请再次输入密码', trigger: 'blur' },
     { validator: validateConfirmPwd, trigger: 'blur' }
   ]
 }

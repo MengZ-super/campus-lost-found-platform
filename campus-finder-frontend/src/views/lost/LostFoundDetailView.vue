@@ -125,7 +125,7 @@
               @click="showClaimDialog"
             >
               <el-icon><ChatDotRound /></el-icon>
-              申请认领
+              {{ detail.itemType === 'lost' ? '提供线索' : '申请认领' }}
             </el-button>
           </div>
         </el-card>
@@ -133,7 +133,7 @@
         <!-- 申请记录 -->
         <el-card v-if="claims.length > 0" class="claims-card">
           <template #header>
-            <span>认领申请 ({{ claims.length }})</span>
+            <span>{{ detail.itemType === 'lost' ? '线索/归还申请' : '认领申请' }} ({{ claims.length }})</span>
           </template>
           <div
             v-for="claim in claims"
@@ -166,15 +166,15 @@
       </template>
     </div>
 
-    <!-- 认领申请弹窗 -->
-    <el-dialog v-model="claimDialogVisible" title="申请认领" width="500px">
+    <!-- 认领/线索申请弹窗 -->
+    <el-dialog v-model="claimDialogVisible" :title="claimDialogTitle" width="500px">
       <el-form ref="claimFormRef" :model="claimForm" :rules="claimRules" label-position="top">
-        <el-form-item label="认领说明" prop="description">
+        <el-form-item :label="claimDialogLabel" prop="description">
           <el-input
             v-model="claimForm.description"
             type="textarea"
             :rows="3"
-            placeholder="请说明为什么认为这是您的物品"
+            :placeholder="claimDialogPlaceholder"
             maxlength="1000"
             show-word-limit
           />
@@ -182,7 +182,7 @@
         <el-form-item label="物品特征" prop="features">
           <el-input
             v-model="claimForm.features"
-            placeholder="描述您对物品的了解，用于验证身份"
+            :placeholder="claimFeaturesPlaceholder"
             maxlength="500"
             show-word-limit
           />
@@ -230,11 +230,11 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ArrowLeft, User, Clock, View, Star, ChatDotRound, Plus } from '@element-plus/icons-vue'
 import { lostFoundApi, claimApi } from '@/api'
-import { useUserStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
 const router = useRouter()
-const userStore = useUserStore()
+const authStore = useAuthStore()
 
 // 数据
 const loading = ref(false)
@@ -256,8 +256,22 @@ const claimFormRef = ref()
 
 // 是否是发布者
 const isOwner = computed(() => {
-  return detail.value.userId === userStore.userInfo?.id
+  return detail.value.userId === authStore.userInfo?.userId
 })
+
+// 根据物品类型返回不同的弹窗文案
+const claimDialogTitle = computed(() => detail.value.itemType === 'lost' ? '提供线索' : '申请认领')
+const claimDialogLabel = computed(() => detail.value.itemType === 'lost' ? '线索说明' : '认领说明')
+const claimDialogPlaceholder = computed(() =>
+  detail.value.itemType === 'lost'
+    ? '请描述您捡到的物品，帮助失主确认'
+    : '请说明为什么认为这是您的物品'
+)
+const claimFeaturesPlaceholder = computed(() =>
+  detail.value.itemType === 'lost'
+    ? '描述物品的关键特征以验证真实性'
+    : '描述您对物品的了解，用于验证身份'
+)
 
 // 状态标签类型
 const statusTagType = computed(() => {
@@ -300,8 +314,10 @@ const loadDetail = async () => {
     claimForm.lostFoundId = id
     claimForm.claimType = res.itemType
 
-    // 加载申请列表
-    loadClaims(id)
+    // 加载申请列表（仅发布者和管理员可查看）
+    if (res.userId === authStore.userInfo?.userId || authStore.isAdmin) {
+      loadClaims(id)
+    }
 
     // 增加浏览次数
     await lostFoundApi.incrementViewCount?.(id) || null
@@ -343,7 +359,7 @@ const handleFavorite = async () => {
 // 显示认领弹窗
 const showClaimDialog = () => {
   // 检查是否登录
-  if (!userStore.isLoggedIn) {
+  if (!authStore.isLoggedIn) {
     ElMessage.warning('请先登录')
     router.push('/login')
     return

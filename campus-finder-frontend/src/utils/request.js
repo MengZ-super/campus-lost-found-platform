@@ -39,17 +39,20 @@ request.interceptors.response.use(
   (response) => {
     const res = response.data
     if (res.code !== 200) {
-      // 业务错误 — 抛出 message 供调用方 catch 处理
+      ElMessage.error(res.message || '请求失败')
       return Promise.reject(new Error(res.message || '请求失败'))
     }
-    // 成功时只返回 data 部分
     return res.data
   },
   async (error) => {
+    // 业务错误已在成功回调中提示，不再重复处理
+    if (!error.response) {
+      return Promise.reject(error)
+    }
+
     const originalRequest = error.config
 
-    // Token 过期，尝试刷新
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       const refreshToken = localStorage.getItem('refreshToken')
 
       if (!refreshToken) {

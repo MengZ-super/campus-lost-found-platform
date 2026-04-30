@@ -84,7 +84,7 @@ public class LostFoundDTO {
         dto.setHappenedTime(lostFound.getHappenedTime());
         dto.setCampus(lostFound.getCampus());
         dto.setStatus(lostFound.getStatus());
-        dto.setStatusText(getStatusText(lostFound.getStatus()));
+        dto.setStatusText(getStatusText(lostFound.getStatus(), lostFound.getItemType()));
         dto.setClaimedBy(lostFound.getClaimedBy());
         dto.setClaimedTime(lostFound.getClaimedTime());
         dto.setClosedTime(lostFound.getClosedTime());
@@ -127,9 +127,18 @@ public class LostFoundDTO {
     }
 
     /**
-     * 获取状态文本
+     * 获取状态文本（根据物品类型区分语义）
      */
-    public static String getStatusText(String status) {
+    public static String getStatusText(String status, String itemType) {
+        if ("lost".equals(itemType)) {
+            return switch (status) {
+                case "pending" -> "寻物中";
+                case "claimed" -> "已找到";
+                case "closed" -> "已关闭";
+                case "expired" -> "已过期";
+                default -> "未知";
+            };
+        }
         return switch (status) {
             case "pending" -> "待认领";
             case "claimed" -> "已认领";

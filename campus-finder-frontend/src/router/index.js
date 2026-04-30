@@ -76,6 +76,45 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     redirect: '/home'
+  },
+  // 管理后台
+  {
+    path: '/admin',
+    component: () => import('@/views/admin/AdminLayout.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true },
+    children: [
+      { path: '', redirect: '/admin/dashboard' },
+      {
+        path: 'dashboard',
+        name: 'AdminDashboard',
+        component: () => import('@/views/admin/AdminDashboardView.vue'),
+        meta: { title: '管理后台' }
+      },
+      {
+        path: 'users',
+        name: 'AdminUsers',
+        component: () => import('@/views/admin/AdminUsersView.vue'),
+        meta: { title: '用户管理' }
+      },
+      {
+        path: 'items',
+        name: 'AdminItems',
+        component: () => import('@/views/admin/AdminItemsView.vue'),
+        meta: { title: '物品管理' }
+      },
+      {
+        path: 'claims',
+        name: 'AdminClaims',
+        component: () => import('@/views/admin/AdminClaimsView.vue'),
+        meta: { title: '认领管理' }
+      },
+      {
+        path: 'categories',
+        name: 'AdminCategories',
+        component: () => import('@/views/admin/AdminCategoriesView.vue'),
+        meta: { title: '分类管理' }
+      }
+    ]
   }
 ]
 
@@ -87,11 +126,16 @@ const router = createRouter({
 // 路由守卫
 router.beforeEach((to, _from, next) => {
   const token = localStorage.getItem('accessToken')
+  const userInfo = JSON.parse(localStorage.getItem('userInfo') || 'null')
+  const isAdmin = userInfo?.role === 'admin'
+
   document.title = `${to.meta.title || '校园失物招领'} - Campus Finder`
 
   if (to.meta.requiresAuth !== false && !token) {
     next({ path: '/login', query: { redirect: to.fullPath } })
   } else if ((to.name === 'Login' || to.name === 'Register') && token) {
+    next(isAdmin ? '/admin/dashboard' : '/home')
+  } else if (to.meta.requiresAdmin && !isAdmin) {
     next('/home')
   } else {
     next()

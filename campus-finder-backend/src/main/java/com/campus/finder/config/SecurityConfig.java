@@ -74,6 +74,9 @@ public class SecurityConfig {
                         // 错误页面
                         .requestMatchers("/error").permitAll()
 
+                        // 管理后台 - 仅管理员可访问
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
                         // 其他请求需要认证
                         .anyRequest().authenticated()
                 )

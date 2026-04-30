@@ -45,24 +45,25 @@ public class JwtUtil {
     /**
      * 生成AccessToken
      */
-    public String generateAccessToken(Long userId, String username) {
-        return generateToken(userId, username, accessTokenExpiration);
+    public String generateAccessToken(Long userId, String username, String role) {
+        return generateToken(userId, username, role, accessTokenExpiration);
     }
 
     /**
      * 生成RefreshToken
      */
-    public String generateRefreshToken(Long userId, String username) {
-        return generateToken(userId, username, refreshTokenExpiration);
+    public String generateRefreshToken(Long userId, String username, String role) {
+        return generateToken(userId, username, role, refreshTokenExpiration);
     }
 
     /**
      * 生成Token
      */
-    private String generateToken(Long userId, String username, long expiration) {
+    private String generateToken(Long userId, String username, String role, long expiration) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
         claims.put("username", username);
+        claims.put("role", role != null ? role : "user");
 
         return Jwts.builder()
                 .claims(claims)
@@ -155,6 +156,15 @@ public class JwtUtil {
         } catch (ExpiredJwtException e) {
             return 0;
         }
+    }
+
+    /**
+     * 从Token获取角色
+     */
+    public String getRoleFromToken(String token) {
+        Claims claims = parseToken(token);
+        Object role = claims.get("role");
+        return role != null ? role.toString() : "user";
     }
 
     /**

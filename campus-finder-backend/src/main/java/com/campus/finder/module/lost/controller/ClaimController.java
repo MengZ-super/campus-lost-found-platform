@@ -64,6 +64,22 @@ public class ClaimController {
     }
 
     /**
+     * 获取当前用户
+     */
+    private User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new BusinessException(ResultCode.UNAUTHORIZED);
+        }
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            throw new BusinessException(ResultCode.USER_NOT_FOUND);
+        }
+        return user;
+    }
+
+    /**
      * 构建DTO
      */
     private ClaimDTO buildDTO(Claim claim) {
@@ -169,8 +185,9 @@ public class ClaimController {
 
         LostFound lostFound = lostFoundService.getByIdOrThrow(lostFoundId);
 
-        // 只有物品发布者可以查看申请
-        if (!lostFound.getUserId().equals(userId)) {
+        // 只有物品发布者和管理员可以查看申请
+        User currentUser = getCurrentUser();
+        if (!lostFound.getUserId().equals(userId) && !currentUser.isAdmin()) {
             throw new BusinessException(ResultCode.FORBIDDEN, "无权查看此物品的申请");
         }
 
@@ -193,8 +210,9 @@ public class ClaimController {
         Claim claim = claimService.getByIdOrThrow(id);
         LostFound lostFound = lostFoundService.getByIdOrThrow(claim.getLostFoundId());
 
-        // 只有物品发布者可以审核
-        if (!lostFound.getUserId().equals(userId)) {
+        // 只有物品发布者和管理员可以审核
+        User currentUser = getCurrentUser();
+        if (!lostFound.getUserId().equals(userId) && !currentUser.isAdmin()) {
             throw new BusinessException(ResultCode.FORBIDDEN, "无权审核此申请");
         }
 

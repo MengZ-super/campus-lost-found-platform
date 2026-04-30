@@ -63,7 +63,7 @@
           :md="8"
           :lg="6"
         >
-          <div class="item-card" @click="goToDetail(item.id)">
+          <div class="item-card" :class="{ 'is-own': item.userId === authStore.userInfo?.userId }" @click="goToDetail(item.id)">
             <div class="item-image">
               <el-image
                 :src="item.images?.[0] || defaultImage"
@@ -94,7 +94,7 @@
                 </span>
               </div>
               <div class="item-footer">
-                <div class="publisher">
+                <div class="publisher" :class="{ 'is-own': item.userId === authStore.userInfo?.userId }">
                   <el-avatar :size="24" :src="item.publisherAvatar" />
                   <span>{{ item.publisherNickname }}</span>
                 </div>
@@ -130,9 +130,11 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Plus, Search, Picture, Location, Clock, View, Star } from '@element-plus/icons-vue'
 import { lostFoundApi, categoryApi } from '@/api'
+import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 
 // 从路由参数获取类型
 const itemType = computed(() => route.query.type || 'found')
@@ -279,6 +281,15 @@ onMounted(() => {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 
+.item-card.is-own {
+  border-left: 3px solid #409eff;
+}
+
+.item-card.is-own:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(64, 158, 255, 0.2);
+}
+
 .item-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -380,6 +391,11 @@ onMounted(() => {
   gap: 8px;
   font-size: 13px;
   color: #606266;
+}
+
+.publisher.is-own span {
+  color: #409eff;
+  font-weight: 600;
 }
 
 .stats {
