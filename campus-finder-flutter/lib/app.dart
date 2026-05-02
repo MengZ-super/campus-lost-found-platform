@@ -22,8 +22,10 @@ class CampusFinderApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
+    return RepositoryProvider<ApiClient>.value(
+      value: apiClient,
+      child: MultiBlocProvider(
+        providers: [
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(
             authService: AuthService(apiClient: apiClient),
@@ -41,6 +43,7 @@ class CampusFinderApp extends StatelessWidget {
         theme: appTheme,
         routerConfig: createRouter(),
         debugShowCheckedModeBanner: false,
+      ),
       ),
     );
   }
