@@ -9,8 +9,8 @@ abstract class Category with _$Category {
     required int id,
     required String name,
     String? icon,
-    int? sortOrder,
-    DateTime? createTime,
+    String? description,
+    int? sort,
   }) = _Category;
 
   factory Category.fromJson(Map<String, dynamic> json) =>
