@@ -82,10 +82,56 @@ abstract class UserProfile with _$UserProfile {
     String? studentId,
     String? avatar,
     String? role,
+    int? gender,
+    String? genderText,
+    int? status,
+    String? lastLoginIp,
     DateTime? createTime,
     DateTime? lastLoginTime,
   }) = _UserProfile;
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>
       _$UserProfileFromJson(json);
+}
+
+@freezed
+abstract class UpdateProfileRequest with _$UpdateProfileRequest {
+  const factory UpdateProfileRequest({
+    String? nickname,
+    String? avatar,
+    String? email,
+    int? gender,
+    String? phone,
+  }) = _UpdateProfileRequest;
+
+  factory UpdateProfileRequest.fromJson(Map<String, dynamic> json) =>
+      _$UpdateProfileRequestFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => {
+        if (nickname != null) 'nickname': nickname,
+        if (avatar != null) 'avatar': avatar,
+        if (email != null) 'email': email,
+        if (gender != null) 'gender': gender,
+        if (phone != null) 'phone': phone,
+      };
+}
+
+@freezed
+abstract class ChangePasswordRequest with _$ChangePasswordRequest {
+  const factory ChangePasswordRequest({
+    required String oldPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) = _ChangePasswordRequest;
+
+  factory ChangePasswordRequest.fromJson(Map<String, dynamic> json) =>
+      _$ChangePasswordRequestFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'oldPassword': oldPassword,
+        'newPassword': newPassword,
+        'confirmPassword': confirmPassword,
+      };
 }
