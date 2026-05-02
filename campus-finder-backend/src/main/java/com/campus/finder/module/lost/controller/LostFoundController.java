@@ -113,6 +113,8 @@ public class LostFoundController {
         lostFound.setDescription(request.getDescription());
         lostFound.setFeatures(request.getFeatures());
         lostFound.setLocation(request.getLocation());
+        lostFound.setLatitude(request.getLatitude());
+        lostFound.setLongitude(request.getLongitude());
         lostFound.setHappenedTime(request.getHappenedTime());
         lostFound.setCampus(request.getCampus());
 
@@ -168,6 +170,12 @@ public class LostFoundController {
         }
         if (request.getLocation() != null) {
             lostFound.setLocation(request.getLocation());
+        }
+        if (request.getLatitude() != null) {
+            lostFound.setLatitude(request.getLatitude());
+        }
+        if (request.getLongitude() != null) {
+            lostFound.setLongitude(request.getLongitude());
         }
         if (request.getHappenedTime() != null) {
             lostFound.setHappenedTime(request.getHappenedTime());

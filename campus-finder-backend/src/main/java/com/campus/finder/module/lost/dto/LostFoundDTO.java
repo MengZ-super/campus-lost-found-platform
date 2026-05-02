@@ -29,6 +29,8 @@ public class LostFoundDTO {
 
     // ========== 地点和时间 ==========
     private String location;
+    private Double latitude;
+    private Double longitude;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime happenedTime;
     private String campus;
@@ -81,6 +83,8 @@ public class LostFoundDTO {
         dto.setDescription(lostFound.getDescription());
         dto.setFeatures(lostFound.getFeatures());
         dto.setLocation(lostFound.getLocation());
+        dto.setLatitude(lostFound.getLatitude());
+        dto.setLongitude(lostFound.getLongitude());
         dto.setHappenedTime(lostFound.getHappenedTime());
         dto.setCampus(lostFound.getCampus());
         dto.setStatus(lostFound.getStatus());

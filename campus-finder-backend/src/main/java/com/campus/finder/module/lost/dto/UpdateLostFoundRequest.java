@@ -33,6 +33,10 @@ public class UpdateLostFoundRequest {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime happenedTime;
 
+    private Double latitude;
+
+    private Double longitude;
+
     @Size(max = 50, message = "校区最多50个字符")
     private String campus;
 }

@@ -73,6 +73,16 @@ public class LostFound implements Serializable {
     private LocalDateTime happenedTime;
 
     /**
+     * 纬度
+     */
+    private Double latitude;
+
+    /**
+     * 经度
+     */
+    private Double longitude;
+
+    /**
      * 校区
      */
     private String campus;
