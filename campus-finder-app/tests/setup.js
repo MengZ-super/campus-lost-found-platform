@@ -13,7 +13,9 @@ global.uni = {
   hideLoading: vi.fn(),
   compressImage: vi.fn(),
   previewImage: vi.fn(),
-  uploadFile: vi.fn()
+  uploadFile: vi.fn(),
+  getLocation: vi.fn(),
+  chooseLocation: vi.fn()
 }
 
 global.uniapp = {}
