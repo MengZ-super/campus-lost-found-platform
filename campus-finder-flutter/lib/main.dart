@@ -13,6 +13,7 @@ void main() async {
 
   final dio = createDio(storage);
   final apiClient = ApiClient(dio: dio, storage: storage);
+  ApiClient.instance = apiClient;
 
   runApp(CampusFinderApp(
     storage: storage,
