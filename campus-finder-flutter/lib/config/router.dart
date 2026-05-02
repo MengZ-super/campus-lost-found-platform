@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../blocs/auth/auth_bloc.dart';
+import '../blocs/auth/auth_state.dart';
 import '../pages/splash/splash_page.dart';
 import '../pages/auth/login_page.dart';
 import '../pages/auth/register_page.dart';
@@ -16,7 +17,6 @@ import '../pages/profile/profile_page.dart';
 import '../pages/profile/change_password_page.dart';
 
 final _rootKey = GlobalKey<NavigatorState>();
-final _shellKey = GlobalKey<NavigatorState>();
 
 GoRouter createRouter() {
   return GoRouter(
@@ -24,9 +24,10 @@ GoRouter createRouter() {
     initialLocation: '/splash',
     redirect: (context, state) {
       final authState = context.read<AuthBloc>().state;
-      final isLoggedIn = authState is _Authenticated;
+      final isLoggedIn = authState is AuthAuthenticated;
       final onSplash = state.matchedLocation == '/splash';
-      final onAuth = state.matchedLocation == '/login' || state.matchedLocation == '/register';
+      final onAuth = state.matchedLocation == '/login' ||
+          state.matchedLocation == '/register';
 
       if (!onSplash && !isLoggedIn && !onAuth) {
         return '/login';
@@ -39,61 +40,67 @@ GoRouter createRouter() {
     routes: [
       GoRoute(
         path: '/splash',
-        builder: (_, __) => const SplashPage(),
+        builder: (context, state) => const SplashPage(),
       ),
       GoRoute(
         path: '/login',
-        builder: (_, __) => const LoginPage(),
+        builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
         path: '/register',
-        builder: (_, __) => const RegisterPage(),
+        builder: (context, state) => const RegisterPage(),
       ),
       StatefulShellRoute.indexedStack(
-        builder: (_, __, navigationShell) =>
+        builder: (context, state, navigationShell) =>
             ScaffoldWithNavBar(navigationShell: navigationShell),
         branches: [
           StatefulShellBranch(routes: [
-            GoRoute(path: '/home', builder: (_, __) => const HomePage()),
+            GoRoute(
+              path: '/home',
+              builder: (context, state) => const HomePage(),
+            ),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
               path: '/lost-found',
-              builder: (_, __) => const LostFoundListPage(),
+              builder: (context, state) => const LostFoundListPage(),
             ),
           ]),
           StatefulShellBranch(routes: [
-            GoRoute(path: '/my', builder: (_, __) => const ProfilePage()),
+            GoRoute(
+              path: '/my',
+              builder: (context, state) => const ProfilePage(),
+            ),
           ]),
         ],
       ),
       GoRoute(
         path: '/lost-found/:id',
-        builder: (_, state) => LostFoundDetailPage(
+        builder: (context, state) => LostFoundDetailPage(
           id: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
         ),
       ),
       GoRoute(
         path: '/publish',
-        builder: (_, __) => const PublishLostFoundPage(),
+        builder: (context, state) => const PublishLostFoundPage(),
       ),
       GoRoute(
         path: '/edit/:id',
-        builder: (_, state) => EditLostFoundPage(
+        builder: (context, state) => EditLostFoundPage(
           id: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
         ),
       ),
       GoRoute(
         path: '/my/publishes',
-        builder: (_, __) => const MyPublishesPage(),
+        builder: (context, state) => const MyPublishesPage(),
       ),
       GoRoute(
         path: '/my/claims',
-        builder: (_, __) => const MyClaimsPage(),
+        builder: (context, state) => const MyClaimsPage(),
       ),
       GoRoute(
         path: '/change-password',
-        builder: (_, __) => const ChangePasswordPage(),
+        builder: (context, state) => const ChangePasswordPage(),
       ),
     ],
   );
@@ -110,12 +117,26 @@ class ScaffoldWithNavBar extends StatelessWidget {
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (index) =>
-            navigationShell.goBranch(index, initialLocation: index == navigationShell.currentIndex),
+        onDestinationSelected: (index) => navigationShell.goBranch(
+          index,
+          initialLocation: index == navigationShell.currentIndex,
+        ),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: '首页'),
-          NavigationDestination(icon: Icon(Icons.search_outlined), selectedIcon: Icon(Icons.search), label: '失物招领'),
-          NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: '我的'),
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: '首页',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.search_outlined),
+            selectedIcon: Icon(Icons.search),
+            label: '失物招领',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+            label: '我的',
+          ),
         ],
       ),
     );

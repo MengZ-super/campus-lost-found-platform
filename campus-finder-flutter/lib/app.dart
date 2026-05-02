@@ -23,10 +23,10 @@ class CampusFinderApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (_) => AuthBloc(
+          create: (context) => AuthBloc(
             authService: AuthService(apiClient: apiClient),
             storage: storage,
-          )..add(AppStarted()),
+          )..add(const AuthEvent.appStarted()),
         ),
       ],
       child: MaterialApp.router(

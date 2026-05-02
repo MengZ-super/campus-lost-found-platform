@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'common.freezed.dart';
-part 'common.g.dart';
 
 @freezed
 class Result<T> with _$Result<T> {

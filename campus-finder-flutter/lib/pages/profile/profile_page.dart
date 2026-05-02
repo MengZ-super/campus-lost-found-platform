@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../blocs/auth/auth_bloc.dart';
+import '../../blocs/auth/auth_event.dart';
+import '../../blocs/auth/auth_state.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -13,9 +15,11 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(title: const Text('我的'), centerTitle: false),
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          final user = state.maybeWhen(
+          final user = state.when(
             authenticated: (user) => user,
-            orElse: () => null,
+            initial: () => null,
+            loading: () => null,
+            unauthenticated: (_) => null,
           );
           if (user == null) return const SizedBox.shrink();
 
@@ -61,25 +65,28 @@ class ProfilePage extends StatelessWidget {
               _MenuTile(
                 icon: Icons.list_alt_outlined,
                 title: '我的发布',
-                onTap: () => context.go('/my/publishes'),
+                onTap: () => GoRouter.of(context).go('/my/publishes'),
               ),
               _MenuTile(
                 icon: Icons.assignment_outlined,
                 title: '我的认领',
-                onTap: () => context.go('/my/claims'),
+                onTap: () => GoRouter.of(context).go('/my/claims'),
               ),
               _MenuTile(
                 icon: Icons.lock_outline,
                 title: '修改密码',
-                onTap: () => context.go('/change-password'),
+                onTap: () => GoRouter.of(context).go('/change-password'),
               ),
               const SizedBox(height: 8),
               FilledButton.tonalIcon(
                 onPressed: () {
-                  context.read<AuthBloc>().add(const AuthEvent.logoutRequested());
+                  context
+                      .read<AuthBloc>()
+                      .add(const AuthEvent.logoutRequested());
                 },
                 icon: const Icon(Icons.logout, color: Colors.red),
-                label: const Text('退出登录', style: TextStyle(color: Colors.red)),
+                label:
+                    const Text('退出登录', style: TextStyle(color: Colors.red)),
               ),
             ],
           );
@@ -94,7 +101,11 @@ class _MenuTile extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
 
-  const _MenuTile({required this.icon, required this.title, required this.onTap});
+  const _MenuTile({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {

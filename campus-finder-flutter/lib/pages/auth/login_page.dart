@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../blocs/auth/auth_bloc.dart';
+import '../../blocs/auth/auth_event.dart';
+import '../../blocs/auth/auth_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -36,8 +39,8 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(title: const Text('登录')),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          state.whenOrNull(
-            authenticated: (_) => context.go('/home'),
+          state.when(
+            authenticated: (user) => GoRouter.of(context).go('/home'),
             unauthenticated: (error) {
               if (error != null) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -45,10 +48,12 @@ class _LoginPageState extends State<LoginPage> {
                 );
               }
             },
+            initial: () {},
+            loading: () {},
           );
         },
         builder: (context, state) {
-          final isLoading = state is _Loading;
+          final isLoading = state is AuthLoading;
           return SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Form(
@@ -108,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 12),
                   TextButton(
-                    onPressed: () => context.go('/register'),
+                    onPressed: () => GoRouter.of(context).go('/register'),
                     child: const Text('还没有账号？立即注册'),
                   ),
                 ],

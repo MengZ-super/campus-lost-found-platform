@@ -15,7 +15,8 @@ class LostFoundListPage extends StatelessWidget {
             decoration: InputDecoration(
               hintText: '搜索物品...',
               prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               filled: true,
             ),
           ),
@@ -23,7 +24,9 @@ class LostFoundListPage extends StatelessWidget {
           Center(
             child: Column(
               children: [
-                Icon(Icons.inbox_outlined, size: 64, color: Theme.of(context).colorScheme.outline),
+                Icon(Icons.inbox_outlined,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.outline),
                 const SizedBox(height: 16),
                 Text('暂无物品信息', style: Theme.of(context).textTheme.bodyLarge),
               ],
@@ -32,7 +35,7 @@ class LostFoundListPage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.go('/publish'),
+        onPressed: () => GoRouter.of(context).go('/publish'),
         icon: const Icon(Icons.add),
         label: const Text('发布'),
       ),

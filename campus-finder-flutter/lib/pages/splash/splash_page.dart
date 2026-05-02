@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../blocs/auth/auth_bloc.dart';
+import '../../blocs/auth/auth_state.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -9,9 +11,12 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        state.whenOrNull(
-          authenticated: (_) => context.go('/home'),
-          unauthenticated: (_) => context.go('/login'),
+        final router = GoRouter.of(context);
+        state.when(
+          initial: () {},
+          loading: () {},
+          authenticated: (user) => router.go('/home'),
+          unauthenticated: (error) => router.go('/login'),
         );
       },
       child: Scaffold(

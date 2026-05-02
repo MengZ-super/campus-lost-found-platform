@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../blocs/auth/auth_bloc.dart';
+import '../../blocs/auth/auth_event.dart';
+import '../../blocs/auth/auth_state.dart';
 import '../../models/user.dart';
 import '../../utils/validators.dart';
 
@@ -47,7 +50,9 @@ class _RegisterPageState extends State<RegisterPage> {
           : _controllers['nickname']!.text.trim(),
     );
 
-    context.read<AuthBloc>().add(AuthEvent.registerRequested(request: request));
+    context
+        .read<AuthBloc>()
+        .add(AuthEvent.registerRequested(request: request));
   }
 
   @override
@@ -56,8 +61,8 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(title: const Text('注册')),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          state.whenOrNull(
-            authenticated: (_) => context.go('/home'),
+          state.when(
+            authenticated: (user) => GoRouter.of(context).go('/home'),
             unauthenticated: (error) {
               if (error != null) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -65,10 +70,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 );
               }
             },
+            initial: () {},
+            loading: () {},
           );
         },
         builder: (context, state) {
-          final isLoading = state is _Loading;
+          final isLoading = state is AuthLoading;
           return SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Form(
@@ -166,7 +173,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   const SizedBox(height: 12),
                   TextButton(
-                    onPressed: () => context.go('/login'),
+                    onPressed: () => GoRouter.of(context).go('/login'),
                     child: const Text('已有账号？立即登录'),
                   ),
                 ],

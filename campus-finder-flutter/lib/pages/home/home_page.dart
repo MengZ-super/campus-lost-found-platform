@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../blocs/auth/auth_bloc.dart';
+import '../../blocs/auth/auth_state.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,9 +17,11 @@ class HomePage extends StatelessWidget {
       ),
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          final nickname = state.maybeWhen(
+          final nickname = state.when(
             authenticated: (user) => user.nickname ?? user.username,
-            orElse: () => '',
+            initial: () => '',
+            loading: () => '',
+            unauthenticated: (_) => '',
           );
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -27,7 +30,9 @@ class HomePage extends StatelessWidget {
               children: [
                 Text('你好，$nickname', style: theme.textTheme.headlineSmall),
                 const SizedBox(height: 4),
-                Text('需要帮助吗？', style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.outline)),
+                Text('需要帮助吗？',
+                    style: theme.textTheme.bodyLarge
+                        ?.copyWith(color: theme.colorScheme.outline)),
                 const SizedBox(height: 24),
                 Row(
                   children: [
@@ -36,7 +41,7 @@ class HomePage extends StatelessWidget {
                         icon: Icons.report_problem_outlined,
                         label: '发布失物',
                         color: theme.colorScheme.error,
-                        onTap: () => context.go('/publish'),
+                        onTap: () => GoRouter.of(context).go('/publish'),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -45,7 +50,7 @@ class HomePage extends StatelessWidget {
                         icon: Icons.check_circle_outline,
                         label: '发布招领',
                         color: theme.colorScheme.primary,
-                        onTap: () => context.go('/publish'),
+                        onTap: () => GoRouter.of(context).go('/publish'),
                       ),
                     ),
                   ],
@@ -58,7 +63,7 @@ class HomePage extends StatelessWidget {
                         icon: Icons.list_alt_outlined,
                         label: '我的发布',
                         color: theme.colorScheme.tertiary,
-                        onTap: () => context.go('/my/publishes'),
+                        onTap: () => GoRouter.of(context).go('/my/publishes'),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -67,7 +72,7 @@ class HomePage extends StatelessWidget {
                         icon: Icons.person_outline,
                         label: '个人中心',
                         color: theme.colorScheme.secondary,
-                        onTap: () => context.go('/my'),
+                        onTap: () => GoRouter.of(context).go('/my'),
                       ),
                     ),
                   ],
@@ -80,9 +85,10 @@ class HomePage extends StatelessWidget {
                   title: const Text('丢失了物品？'),
                   subtitle: const Text('发布寻物信息，让大家帮你找'),
                   trailing: const Icon(Icons.chevron_right),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                   tileColor: theme.colorScheme.surfaceContainerHighest,
-                  onTap: () => context.go('/publish'),
+                  onTap: () => GoRouter.of(context).go('/publish'),
                 ),
                 const SizedBox(height: 8),
                 ListTile(
@@ -90,9 +96,10 @@ class HomePage extends StatelessWidget {
                   title: const Text('捡到了东西？'),
                   subtitle: const Text('发布招领信息，帮它找到主人'),
                   trailing: const Icon(Icons.chevron_right),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
                   tileColor: theme.colorScheme.surfaceContainerHighest,
-                  onTap: () => context.go('/publish'),
+                  onTap: () => GoRouter.of(context).go('/publish'),
                 ),
               ],
             ),
