@@ -17,6 +17,8 @@ Dio createDio(SecureStorage storage) {
 }
 
 class ApiClient {
+  static late final ApiClient instance;
+
   final Dio dio;
   final SecureStorage storage;
 
