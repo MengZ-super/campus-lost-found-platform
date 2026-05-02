@@ -20,3 +20,13 @@ String? validatePassword(String? value) {
   if (!RegExp(r'\d').hasMatch(value)) return '密码必须包含数字';
   return null;
 }
+
+String? validateRequired(String? value, String label) {
+  if (value == null || value.trim().isEmpty) return '请输入$label';
+  return null;
+}
+
+String? validateMaxLength(String? value, int max, String label) {
+  if (value != null && value.trim().length > max) return '$label最多$max个字符';
+  return null;
+}
