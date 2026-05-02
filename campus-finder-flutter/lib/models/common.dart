@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'common.freezed.dart';
 
 @freezed
-class Result<T> with _$Result<T> {
+abstract class Result<T> with _$Result<T> {
   const factory Result({
     required int code,
     required String message,
@@ -25,7 +25,7 @@ class Result<T> with _$Result<T> {
 }
 
 @freezed
-class PageData<T> with _$PageData<T> {
+abstract class PageData<T> with _$PageData<T> {
   const factory PageData({
     required int current,
     required int size,

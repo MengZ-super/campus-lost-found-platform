@@ -4,7 +4,7 @@ part 'user.freezed.dart';
 part 'user.g.dart';
 
 @freezed
-class User with _$User {
+abstract class User with _$User {
   const factory User({
     required int id,
     required String username,
@@ -22,7 +22,7 @@ class User with _$User {
 }
 
 @freezed
-class AuthResponse with _$AuthResponse {
+abstract class AuthResponse with _$AuthResponse {
   const factory AuthResponse({
     required String accessToken,
     required String refreshToken,
@@ -35,7 +35,7 @@ class AuthResponse with _$AuthResponse {
 }
 
 @freezed
-class LoginRequest with _$LoginRequest {
+abstract class LoginRequest with _$LoginRequest {
   const factory LoginRequest({
     required String username,
     required String password,
@@ -44,11 +44,12 @@ class LoginRequest with _$LoginRequest {
   factory LoginRequest.fromJson(Map<String, dynamic> json) =>
       _$LoginRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => {'username': username, 'password': password};
 }
 
 @freezed
-class RegisterRequest with _$RegisterRequest {
+abstract class RegisterRequest with _$RegisterRequest {
   const factory RegisterRequest({
     required String username,
     required String password,
@@ -60,6 +61,7 @@ class RegisterRequest with _$RegisterRequest {
   factory RegisterRequest.fromJson(Map<String, dynamic> json) =>
       _$RegisterRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => {
         'username': username,
         'password': password,
@@ -70,7 +72,7 @@ class RegisterRequest with _$RegisterRequest {
 }
 
 @freezed
-class UserProfile with _$UserProfile {
+abstract class UserProfile with _$UserProfile {
   const factory UserProfile({
     required int id,
     required String username,

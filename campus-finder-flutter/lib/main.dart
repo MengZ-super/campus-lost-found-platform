@@ -7,8 +7,8 @@ import 'services/token_storage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final storage = SecureStorage(
-    secureStorage: const FlutterSecureStorage(),
+  const storage = SecureStorage(
+    secureStorage: FlutterSecureStorage(),
   );
 
   final dio = createDio(storage);

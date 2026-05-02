@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../models/user.dart';
 import '../../services/auth_service.dart';
 import '../../services/token_storage.dart';
 import 'auth_event.dart';

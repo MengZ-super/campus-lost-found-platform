@@ -4,7 +4,7 @@ part 'claim.freezed.dart';
 part 'claim.g.dart';
 
 @freezed
-class Claim with _$Claim {
+abstract class Claim with _$Claim {
   const factory Claim({
     required int id,
     required int lostFoundId,
@@ -27,7 +27,7 @@ class Claim with _$Claim {
 }
 
 @freezed
-class CreateClaimRequest with _$CreateClaimRequest {
+abstract class CreateClaimRequest with _$CreateClaimRequest {
   const factory CreateClaimRequest({
     required String description,
     String? features,
@@ -38,6 +38,7 @@ class CreateClaimRequest with _$CreateClaimRequest {
   factory CreateClaimRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateClaimRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => {
         'description': description,
         if (features != null) 'features': features,
@@ -47,7 +48,7 @@ class CreateClaimRequest with _$CreateClaimRequest {
 }
 
 @freezed
-class ReviewClaimRequest with _$ReviewClaimRequest {
+abstract class ReviewClaimRequest with _$ReviewClaimRequest {
   const factory ReviewClaimRequest({
     required String status,
     String? comment,
@@ -56,6 +57,7 @@ class ReviewClaimRequest with _$ReviewClaimRequest {
   factory ReviewClaimRequest.fromJson(Map<String, dynamic> json) =>
       _$ReviewClaimRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => {
         'status': status,
         if (comment != null) 'comment': comment,

@@ -4,7 +4,7 @@ part 'lost_found.freezed.dart';
 part 'lost_found.g.dart';
 
 @freezed
-class LostFoundItem with _$LostFoundItem {
+abstract class LostFoundItem with _$LostFoundItem {
   const factory LostFoundItem({
     required int id,
     required int userId,
@@ -42,7 +42,7 @@ class LostFoundItem with _$LostFoundItem {
 }
 
 @freezed
-class CreateLostFoundRequest with _$CreateLostFoundRequest {
+abstract class CreateLostFoundRequest with _$CreateLostFoundRequest {
   const factory CreateLostFoundRequest({
     required int categoryId,
     required String itemType,
@@ -60,6 +60,7 @@ class CreateLostFoundRequest with _$CreateLostFoundRequest {
   factory CreateLostFoundRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateLostFoundRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => {
         'categoryId': categoryId,
         'itemType': itemType,
@@ -71,13 +72,13 @@ class CreateLostFoundRequest with _$CreateLostFoundRequest {
         if (latitude != null) 'latitude': latitude,
         if (longitude != null) 'longitude': longitude,
         'happenedTime':
-            '${happenedTime.toIso8601String().split('.').first.replaceAll('T', ' ')}',
+            happenedTime.toIso8601String().split('.').first.replaceAll('T', ' '),
         if (campus != null) 'campus': campus,
       };
 }
 
 @freezed
-class UpdateLostFoundRequest with _$UpdateLostFoundRequest {
+abstract class UpdateLostFoundRequest with _$UpdateLostFoundRequest {
   const factory UpdateLostFoundRequest({
     int? categoryId,
     String? title,
@@ -94,6 +95,7 @@ class UpdateLostFoundRequest with _$UpdateLostFoundRequest {
   factory UpdateLostFoundRequest.fromJson(Map<String, dynamic> json) =>
       _$UpdateLostFoundRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => {
         if (categoryId != null) 'categoryId': categoryId,
         if (title != null) 'title': title,
@@ -105,7 +107,7 @@ class UpdateLostFoundRequest with _$UpdateLostFoundRequest {
         if (longitude != null) 'longitude': longitude,
         if (happenedTime != null)
           'happenedTime':
-              '${happenedTime!.toIso8601String().split('.').first.replaceAll('T', ' ')}',
+              happenedTime!.toIso8601String().split('.').first.replaceAll('T', ' '),
         if (campus != null) 'campus': campus,
       };
 }
