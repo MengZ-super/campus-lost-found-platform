@@ -4,6 +4,9 @@ import 'services/api_client.dart';
 import 'services/token_storage.dart';
 import 'services/auth_service.dart';
 import 'services/user_service.dart';
+import 'services/lost_found_service.dart';
+import 'services/category_service.dart';
+import 'services/upload_service.dart';
 import 'blocs/auth/auth_bloc.dart';
 import 'blocs/auth/auth_event.dart';
 import 'blocs/profile/profile_bloc.dart';
@@ -22,25 +25,38 @@ class CampusFinderApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(
-            authService: AuthService(apiClient: apiClient),
-            storage: storage,
-          )..add(const AuthEvent.appStarted()),
+        RepositoryProvider<LostFoundService>(
+          create: (_) => LostFoundService(apiClient: apiClient),
         ),
-        BlocProvider<ProfileBloc>(
-          create: (context) => ProfileBloc(
-            userService: UserService(apiClient: apiClient),
-          ),
+        RepositoryProvider<CategoryService>(
+          create: (_) => CategoryService(apiClient: apiClient),
+        ),
+        RepositoryProvider<UploadService>(
+          create: (_) => UploadService(apiClient: apiClient),
         ),
       ],
-      child: MaterialApp.router(
-        title: '校园失物招领',
-        theme: appTheme,
-        routerConfig: createRouter(),
-        debugShowCheckedModeBanner: false,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthBloc>(
+            create: (context) => AuthBloc(
+              authService: AuthService(apiClient: apiClient),
+              storage: storage,
+            )..add(const AuthEvent.appStarted()),
+          ),
+          BlocProvider<ProfileBloc>(
+            create: (context) => ProfileBloc(
+              userService: UserService(apiClient: apiClient),
+            ),
+          ),
+        ],
+        child: MaterialApp.router(
+          title: '校园失物招领',
+          theme: appTheme,
+          routerConfig: createRouter(),
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }
