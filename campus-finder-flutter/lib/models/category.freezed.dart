@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Category {
 
- int get id; String get name; String? get icon; int? get sortOrder; DateTime? get createTime;
+ int get id; String get name; String? get icon; String? get description; int? get sort;
 /// Create a copy of Category
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CategoryCopyWith<Category> get copyWith => _$CategoryCopyWithImpl<Category>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Category&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder)&&(identical(other.createTime, createTime) || other.createTime == createTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Category&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.description, description) || other.description == description)&&(identical(other.sort, sort) || other.sort == sort));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,icon,sortOrder,createTime);
+int get hashCode => Object.hash(runtimeType,id,name,icon,description,sort);
 
 @override
 String toString() {
-  return 'Category(id: $id, name: $name, icon: $icon, sortOrder: $sortOrder, createTime: $createTime)';
+  return 'Category(id: $id, name: $name, icon: $icon, description: $description, sort: $sort)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CategoryCopyWith<$Res>  {
   factory $CategoryCopyWith(Category value, $Res Function(Category) _then) = _$CategoryCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, String? icon, int? sortOrder, DateTime? createTime
+ int id, String name, String? icon, String? description, int? sort
 });
 
 
@@ -65,14 +65,14 @@ class _$CategoryCopyWithImpl<$Res>
 
 /// Create a copy of Category
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? icon = freezed,Object? sortOrder = freezed,Object? createTime = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? icon = freezed,Object? description = freezed,Object? sort = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
-as String?,sortOrder: freezed == sortOrder ? _self.sortOrder : sortOrder // ignore: cast_nullable_to_non_nullable
-as int?,createTime: freezed == createTime ? _self.createTime : createTime // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,sort: freezed == sort ? _self.sort : sort // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -157,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String? icon,  int? sortOrder,  DateTime? createTime)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String? icon,  String? description,  int? sort)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Category() when $default != null:
-return $default(_that.id,_that.name,_that.icon,_that.sortOrder,_that.createTime);case _:
+return $default(_that.id,_that.name,_that.icon,_that.description,_that.sort);case _:
   return orElse();
 
 }
@@ -178,10 +178,10 @@ return $default(_that.id,_that.name,_that.icon,_that.sortOrder,_that.createTime)
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String? icon,  int? sortOrder,  DateTime? createTime)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String? icon,  String? description,  int? sort)  $default,) {final _that = this;
 switch (_that) {
 case _Category():
-return $default(_that.id,_that.name,_that.icon,_that.sortOrder,_that.createTime);case _:
+return $default(_that.id,_that.name,_that.icon,_that.description,_that.sort);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +198,10 @@ return $default(_that.id,_that.name,_that.icon,_that.sortOrder,_that.createTime)
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String? icon,  int? sortOrder,  DateTime? createTime)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String? icon,  String? description,  int? sort)?  $default,) {final _that = this;
 switch (_that) {
 case _Category() when $default != null:
-return $default(_that.id,_that.name,_that.icon,_that.sortOrder,_that.createTime);case _:
+return $default(_that.id,_that.name,_that.icon,_that.description,_that.sort);case _:
   return null;
 
 }
@@ -213,14 +213,14 @@ return $default(_that.id,_that.name,_that.icon,_that.sortOrder,_that.createTime)
 @JsonSerializable()
 
 class _Category implements Category {
-  const _Category({required this.id, required this.name, this.icon, this.sortOrder, this.createTime});
+  const _Category({required this.id, required this.name, this.icon, this.description, this.sort});
   factory _Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
 
 @override final  int id;
 @override final  String name;
 @override final  String? icon;
-@override final  int? sortOrder;
-@override final  DateTime? createTime;
+@override final  String? description;
+@override final  int? sort;
 
 /// Create a copy of Category
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Category&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder)&&(identical(other.createTime, createTime) || other.createTime == createTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Category&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.description, description) || other.description == description)&&(identical(other.sort, sort) || other.sort == sort));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,icon,sortOrder,createTime);
+int get hashCode => Object.hash(runtimeType,id,name,icon,description,sort);
 
 @override
 String toString() {
-  return 'Category(id: $id, name: $name, icon: $icon, sortOrder: $sortOrder, createTime: $createTime)';
+  return 'Category(id: $id, name: $name, icon: $icon, description: $description, sort: $sort)';
 }
 
 
@@ -255,7 +255,7 @@ abstract mixin class _$CategoryCopyWith<$Res> implements $CategoryCopyWith<$Res>
   factory _$CategoryCopyWith(_Category value, $Res Function(_Category) _then) = __$CategoryCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, String? icon, int? sortOrder, DateTime? createTime
+ int id, String name, String? icon, String? description, int? sort
 });
 
 
@@ -272,14 +272,14 @@ class __$CategoryCopyWithImpl<$Res>
 
 /// Create a copy of Category
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? icon = freezed,Object? sortOrder = freezed,Object? createTime = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? icon = freezed,Object? description = freezed,Object? sort = freezed,}) {
   return _then(_Category(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
-as String?,sortOrder: freezed == sortOrder ? _self.sortOrder : sortOrder // ignore: cast_nullable_to_non_nullable
-as int?,createTime: freezed == createTime ? _self.createTime : createTime // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,sort: freezed == sort ? _self.sort : sort // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

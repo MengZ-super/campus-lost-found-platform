@@ -91,12 +91,16 @@ _UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => _UserProfile(
   studentId: json['studentId'] as String?,
   avatar: json['avatar'] as String?,
   role: json['role'] as String?,
-  createTime: json['createTime'] == null
-      ? null
-      : DateTime.parse(json['createTime'] as String),
+  gender: (json['gender'] as num?)?.toInt(),
+  genderText: json['genderText'] as String?,
+  status: (json['status'] as num?)?.toInt(),
   lastLoginTime: json['lastLoginTime'] == null
       ? null
       : DateTime.parse(json['lastLoginTime'] as String),
+  lastLoginIp: json['lastLoginIp'] as String?,
+  createTime: json['createTime'] == null
+      ? null
+      : DateTime.parse(json['createTime'] as String),
 );
 
 Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
@@ -109,6 +113,46 @@ Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
       'studentId': instance.studentId,
       'avatar': instance.avatar,
       'role': instance.role,
-      'createTime': instance.createTime?.toIso8601String(),
+      'gender': instance.gender,
+      'genderText': instance.genderText,
+      'status': instance.status,
       'lastLoginTime': instance.lastLoginTime?.toIso8601String(),
+      'lastLoginIp': instance.lastLoginIp,
+      'createTime': instance.createTime?.toIso8601String(),
     };
+
+_UpdateProfileRequest _$UpdateProfileRequestFromJson(
+  Map<String, dynamic> json,
+) => _UpdateProfileRequest(
+  nickname: json['nickname'] as String?,
+  avatar: json['avatar'] as String?,
+  email: json['email'] as String?,
+  gender: (json['gender'] as num?)?.toInt(),
+  phone: json['phone'] as String?,
+);
+
+Map<String, dynamic> _$UpdateProfileRequestToJson(
+  _UpdateProfileRequest instance,
+) => <String, dynamic>{
+  'nickname': instance.nickname,
+  'avatar': instance.avatar,
+  'email': instance.email,
+  'gender': instance.gender,
+  'phone': instance.phone,
+};
+
+_ChangePasswordRequest _$ChangePasswordRequestFromJson(
+  Map<String, dynamic> json,
+) => _ChangePasswordRequest(
+  oldPassword: json['oldPassword'] as String,
+  newPassword: json['newPassword'] as String,
+  confirmPassword: json['confirmPassword'] as String,
+);
+
+Map<String, dynamic> _$ChangePasswordRequestToJson(
+  _ChangePasswordRequest instance,
+) => <String, dynamic>{
+  'oldPassword': instance.oldPassword,
+  'newPassword': instance.newPassword,
+  'confirmPassword': instance.confirmPassword,
+};
