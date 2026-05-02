@@ -17,11 +17,11 @@ import '../pages/my/my_claims_page.dart';
 import '../pages/profile/profile_page.dart';
 import '../pages/profile/change_password_page.dart';
 
-final _rootKey = GlobalKey<NavigatorState>();
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter createRouter() {
   return GoRouter(
-    navigatorKey: _rootKey,
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/splash',
     redirect: (context, state) {
       final authState = context.read<AuthBloc>().state;
