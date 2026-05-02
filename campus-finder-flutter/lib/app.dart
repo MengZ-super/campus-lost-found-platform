@@ -22,25 +22,28 @@ class CampusFinderApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(
-            authService: AuthService(apiClient: apiClient),
-            storage: storage,
-          )..add(const AuthEvent.appStarted()),
-        ),
-        BlocProvider<ProfileBloc>(
-          create: (context) => ProfileBloc(
-            userService: UserService(apiClient: apiClient),
+    return RepositoryProvider<ApiClient>.value(
+      value: apiClient,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthBloc>(
+            create: (context) => AuthBloc(
+              authService: AuthService(apiClient: apiClient),
+              storage: storage,
+            )..add(const AuthEvent.appStarted()),
           ),
+          BlocProvider<ProfileBloc>(
+            create: (context) => ProfileBloc(
+              userService: UserService(apiClient: apiClient),
+            ),
+          ),
+        ],
+        child: MaterialApp.router(
+          title: '校园失物招领',
+          theme: appTheme,
+          routerConfig: createRouter(),
+          debugShowCheckedModeBanner: false,
         ),
-      ],
-      child: MaterialApp.router(
-        title: '校园失物招领',
-        theme: appTheme,
-        routerConfig: createRouter(),
-        debugShowCheckedModeBanner: false,
       ),
     );
   }
