@@ -11,6 +11,7 @@ import '../pages/lost_found/list_page.dart';
 import '../pages/lost_found/detail_page.dart';
 import '../pages/lost_found/publish_page.dart';
 import '../pages/lost_found/edit_page.dart';
+import '../widgets/map_picker.dart';
 import '../pages/my/my_publishes_page.dart';
 import '../pages/my/my_claims_page.dart';
 import '../pages/profile/profile_page.dart';
@@ -101,6 +102,17 @@ GoRouter createRouter() {
       GoRoute(
         path: '/change-password',
         builder: (context, state) => const ChangePasswordPage(),
+      ),
+      GoRoute(
+        path: '/map-picker',
+        builder: (context, state) {
+          final lat = state.uri.queryParameters['lat'];
+          final lng = state.uri.queryParameters['lng'];
+          return MapPickerPage(
+            initialLat: lat != null ? double.tryParse(lat) : null,
+            initialLng: lng != null ? double.tryParse(lng) : null,
+          );
+        },
       ),
     ],
   );
