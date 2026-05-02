@@ -7,14 +7,14 @@ spring:
   # 数据源配置（通过1Panel Docker容器管理）
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/campus_finder?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://172.31.126.71:3306/campus_finder?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: ${DB_PASSWORD:mysql_jeZ4zX}
 
   # Redis 配置（通过1Panel Docker容器管理）
   data:
     redis:
-      host: 127.0.0.1
+      host: 172.31.126.71
       port: 6379
       password: redis_myijP2
       database: 0
@@ -41,7 +41,7 @@ file:
 
 # MinIO 配置
 minio:
-  endpoint: http://localhost:9000
+  endpoint: http://172.31.126.71:9000
   access-key: minio_bhFH5e
   secret-key: minio_Fmnjpw
   bucket: campus-finder
