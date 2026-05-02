@@ -25,6 +25,16 @@ campus-lost-found-platform/
 │       ├── stores/auth.js                  # Pinia 认证状态
 │       ├── views/ (auth/, lost/, user/, admin/, HomeView.vue)
 │       └── layouts/MainLayout.vue
+├── campus-finder-flutter/                  # Flutter 3.x, 端口由 Vite 代理
+│   ├── lib/
+│   │   ├── models/                         # @freezed 数据模型（必须用 abstract class）
+│   │   ├── services/                       # API 封装（Dio + ApiClient 注入）
+│   │   ├── blocs/                          # BLoC 状态管理（event/state/bloc 三元组）
+│   │   ├── pages/                          # 页面（auth/ home/ lost_found/ my/ profile/ splash/）
+│   │   ├── widgets/                        # 通用组件（item_card/ status_badge/ image_carousel 等）
+│   │   ├── config/                         # API 配置/路由/高德 Key
+│   │   └── utils/                          # 日期/校验/常量工具
+│   └── test/                               # bloc_test + mocktail 单元测试
 ├── CLAUDE.md
 ├── fix_script.py
 ├── generate_assets.py
@@ -104,3 +114,55 @@ cat path/to/script.sql | wsl -d Ubuntu-22.04 docker exec -i 1Panel-mysql-8fOV my
 ```
 
 `--default-character-set=utf8mb4` 和 `-i`（stdin 管道）两个参数缺一不可。
+
+## Flutter 开发
+
+### 环境变量
+
+所有 flutter/dart 命令需要 pub 镜像：
+```bash
+PUB_HOSTED_URL=https://pub.flutter-io.cn
+```
+
+flutter 路径：`/c/flutter/bin/flutter.bat`
+
+### 代码生成
+
+```bash
+cd campus-finder-flutter && PUB_HOSTED_URL=https://pub.flutter-io.cn /c/flutter/bin/dart.bat run build_runner build
+```
+
+`--delete-conflicting-outputs` 参数已废弃，不要用。
+
+### 静态分析
+
+```bash
+cd campus-finder-flutter && PUB_HOSTED_URL=https://pub.flutter-io.cn /c/flutter/bin/flutter.bat analyze
+```
+
+### freezed 3.x 关键规则
+
+`@freezed` 标注的类必须加 `abstract`：
+```dart
+@freezed
+abstract class Foo with _$Foo {  // ← abstract 不可省略
+  const factory Foo({...}) = _Foo;
+}
+```
+
+原因：freezed 3.x 生成的 `_$Foo` mixin 声明了抽象成员（字段 getter + toJson()），非 abstract 类无法继承。
+模型文件修改后必须重新运行 `build_runner build`。
+
+### amap_flutter_map 版本限制
+
+pub.flutter-io.cn 上 `amap_flutter_map` 最高版本为 3.0.0（`^3.1.0` 不存在）。
+`LatLng` 和 `AMapApiKey` 类在 `amap_flutter_base` 包中，需在 pubspec.yaml 中声明为直接依赖：
+```yaml
+amap_flutter_base: ^3.0.0
+amap_flutter_map: ^3.0.0
+```
+
+## Git Worktree 注意事项
+
+- 分支名 `feature/xxx` 与已有分支名 `feature` 冲突时，改用 `ft/` 前缀
+- Windows 下 `git worktree remove` 可能因文件锁失败，`--force` 可清理 git 引用但目录需手动删除
