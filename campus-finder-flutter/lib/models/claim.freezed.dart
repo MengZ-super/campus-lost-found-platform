@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Claim {
 
- int get id; int get lostFoundId; int get applicantId; String get description; String? get applicantNickname; String? get applicantPhone; String? get features; String? get contactInfo; List<String>? get proofImages; String get status; String? get reviewerId; String? get reviewComment; DateTime? get reviewedTime; DateTime? get createTime; DateTime? get updateTime;
+ int get id; int get lostFoundId; int get userId; String? get claimType; String? get description; String? get features; String? get contact; List<String>? get proofImages; DateTime? get expectTime; String get status; String? get statusText; String? get remark; int? get reviewedBy; String? get reviewerNickname; DateTime? get reviewedTime; String? get lostFoundTitle; String? get lostFoundLocation; List<String>? get lostFoundImages; String? get applicantNickname; String? get applicantAvatar; DateTime? get createTime; DateTime? get updateTime;
 /// Create a copy of Claim
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ClaimCopyWith<Claim> get copyWith => _$ClaimCopyWithImpl<Claim>(this as Claim, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Claim&&(identical(other.id, id) || other.id == id)&&(identical(other.lostFoundId, lostFoundId) || other.lostFoundId == lostFoundId)&&(identical(other.applicantId, applicantId) || other.applicantId == applicantId)&&(identical(other.description, description) || other.description == description)&&(identical(other.applicantNickname, applicantNickname) || other.applicantNickname == applicantNickname)&&(identical(other.applicantPhone, applicantPhone) || other.applicantPhone == applicantPhone)&&(identical(other.features, features) || other.features == features)&&(identical(other.contactInfo, contactInfo) || other.contactInfo == contactInfo)&&const DeepCollectionEquality().equals(other.proofImages, proofImages)&&(identical(other.status, status) || other.status == status)&&(identical(other.reviewerId, reviewerId) || other.reviewerId == reviewerId)&&(identical(other.reviewComment, reviewComment) || other.reviewComment == reviewComment)&&(identical(other.reviewedTime, reviewedTime) || other.reviewedTime == reviewedTime)&&(identical(other.createTime, createTime) || other.createTime == createTime)&&(identical(other.updateTime, updateTime) || other.updateTime == updateTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Claim&&(identical(other.id, id) || other.id == id)&&(identical(other.lostFoundId, lostFoundId) || other.lostFoundId == lostFoundId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.claimType, claimType) || other.claimType == claimType)&&(identical(other.description, description) || other.description == description)&&(identical(other.features, features) || other.features == features)&&(identical(other.contact, contact) || other.contact == contact)&&const DeepCollectionEquality().equals(other.proofImages, proofImages)&&(identical(other.expectTime, expectTime) || other.expectTime == expectTime)&&(identical(other.status, status) || other.status == status)&&(identical(other.statusText, statusText) || other.statusText == statusText)&&(identical(other.remark, remark) || other.remark == remark)&&(identical(other.reviewedBy, reviewedBy) || other.reviewedBy == reviewedBy)&&(identical(other.reviewerNickname, reviewerNickname) || other.reviewerNickname == reviewerNickname)&&(identical(other.reviewedTime, reviewedTime) || other.reviewedTime == reviewedTime)&&(identical(other.lostFoundTitle, lostFoundTitle) || other.lostFoundTitle == lostFoundTitle)&&(identical(other.lostFoundLocation, lostFoundLocation) || other.lostFoundLocation == lostFoundLocation)&&const DeepCollectionEquality().equals(other.lostFoundImages, lostFoundImages)&&(identical(other.applicantNickname, applicantNickname) || other.applicantNickname == applicantNickname)&&(identical(other.applicantAvatar, applicantAvatar) || other.applicantAvatar == applicantAvatar)&&(identical(other.createTime, createTime) || other.createTime == createTime)&&(identical(other.updateTime, updateTime) || other.updateTime == updateTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,lostFoundId,applicantId,description,applicantNickname,applicantPhone,features,contactInfo,const DeepCollectionEquality().hash(proofImages),status,reviewerId,reviewComment,reviewedTime,createTime,updateTime);
+int get hashCode => Object.hashAll([runtimeType,id,lostFoundId,userId,claimType,description,features,contact,const DeepCollectionEquality().hash(proofImages),expectTime,status,statusText,remark,reviewedBy,reviewerNickname,reviewedTime,lostFoundTitle,lostFoundLocation,const DeepCollectionEquality().hash(lostFoundImages),applicantNickname,applicantAvatar,createTime,updateTime]);
 
 @override
 String toString() {
-  return 'Claim(id: $id, lostFoundId: $lostFoundId, applicantId: $applicantId, description: $description, applicantNickname: $applicantNickname, applicantPhone: $applicantPhone, features: $features, contactInfo: $contactInfo, proofImages: $proofImages, status: $status, reviewerId: $reviewerId, reviewComment: $reviewComment, reviewedTime: $reviewedTime, createTime: $createTime, updateTime: $updateTime)';
+  return 'Claim(id: $id, lostFoundId: $lostFoundId, userId: $userId, claimType: $claimType, description: $description, features: $features, contact: $contact, proofImages: $proofImages, expectTime: $expectTime, status: $status, statusText: $statusText, remark: $remark, reviewedBy: $reviewedBy, reviewerNickname: $reviewerNickname, reviewedTime: $reviewedTime, lostFoundTitle: $lostFoundTitle, lostFoundLocation: $lostFoundLocation, lostFoundImages: $lostFoundImages, applicantNickname: $applicantNickname, applicantAvatar: $applicantAvatar, createTime: $createTime, updateTime: $updateTime)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ClaimCopyWith<$Res>  {
   factory $ClaimCopyWith(Claim value, $Res Function(Claim) _then) = _$ClaimCopyWithImpl;
 @useResult
 $Res call({
- int id, int lostFoundId, int applicantId, String description, String? applicantNickname, String? applicantPhone, String? features, String? contactInfo, List<String>? proofImages, String status, String? reviewerId, String? reviewComment, DateTime? reviewedTime, DateTime? createTime, DateTime? updateTime
+ int id, int lostFoundId, int userId, String? claimType, String? description, String? features, String? contact, List<String>? proofImages, DateTime? expectTime, String status, String? statusText, String? remark, int? reviewedBy, String? reviewerNickname, DateTime? reviewedTime, String? lostFoundTitle, String? lostFoundLocation, List<String>? lostFoundImages, String? applicantNickname, String? applicantAvatar, DateTime? createTime, DateTime? updateTime
 });
 
 
@@ -65,22 +65,29 @@ class _$ClaimCopyWithImpl<$Res>
 
 /// Create a copy of Claim
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? lostFoundId = null,Object? applicantId = null,Object? description = null,Object? applicantNickname = freezed,Object? applicantPhone = freezed,Object? features = freezed,Object? contactInfo = freezed,Object? proofImages = freezed,Object? status = null,Object? reviewerId = freezed,Object? reviewComment = freezed,Object? reviewedTime = freezed,Object? createTime = freezed,Object? updateTime = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? lostFoundId = null,Object? userId = null,Object? claimType = freezed,Object? description = freezed,Object? features = freezed,Object? contact = freezed,Object? proofImages = freezed,Object? expectTime = freezed,Object? status = null,Object? statusText = freezed,Object? remark = freezed,Object? reviewedBy = freezed,Object? reviewerNickname = freezed,Object? reviewedTime = freezed,Object? lostFoundTitle = freezed,Object? lostFoundLocation = freezed,Object? lostFoundImages = freezed,Object? applicantNickname = freezed,Object? applicantAvatar = freezed,Object? createTime = freezed,Object? updateTime = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,lostFoundId: null == lostFoundId ? _self.lostFoundId : lostFoundId // ignore: cast_nullable_to_non_nullable
-as int,applicantId: null == applicantId ? _self.applicantId : applicantId // ignore: cast_nullable_to_non_nullable
-as int,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,applicantNickname: freezed == applicantNickname ? _self.applicantNickname : applicantNickname // ignore: cast_nullable_to_non_nullable
-as String?,applicantPhone: freezed == applicantPhone ? _self.applicantPhone : applicantPhone // ignore: cast_nullable_to_non_nullable
+as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int,claimType: freezed == claimType ? _self.claimType : claimType // ignore: cast_nullable_to_non_nullable
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,features: freezed == features ? _self.features : features // ignore: cast_nullable_to_non_nullable
-as String?,contactInfo: freezed == contactInfo ? _self.contactInfo : contactInfo // ignore: cast_nullable_to_non_nullable
+as String?,contact: freezed == contact ? _self.contact : contact // ignore: cast_nullable_to_non_nullable
 as String?,proofImages: freezed == proofImages ? _self.proofImages : proofImages // ignore: cast_nullable_to_non_nullable
-as List<String>?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,reviewerId: freezed == reviewerId ? _self.reviewerId : reviewerId // ignore: cast_nullable_to_non_nullable
-as String?,reviewComment: freezed == reviewComment ? _self.reviewComment : reviewComment // ignore: cast_nullable_to_non_nullable
+as List<String>?,expectTime: freezed == expectTime ? _self.expectTime : expectTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,statusText: freezed == statusText ? _self.statusText : statusText // ignore: cast_nullable_to_non_nullable
+as String?,remark: freezed == remark ? _self.remark : remark // ignore: cast_nullable_to_non_nullable
+as String?,reviewedBy: freezed == reviewedBy ? _self.reviewedBy : reviewedBy // ignore: cast_nullable_to_non_nullable
+as int?,reviewerNickname: freezed == reviewerNickname ? _self.reviewerNickname : reviewerNickname // ignore: cast_nullable_to_non_nullable
 as String?,reviewedTime: freezed == reviewedTime ? _self.reviewedTime : reviewedTime // ignore: cast_nullable_to_non_nullable
-as DateTime?,createTime: freezed == createTime ? _self.createTime : createTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,lostFoundTitle: freezed == lostFoundTitle ? _self.lostFoundTitle : lostFoundTitle // ignore: cast_nullable_to_non_nullable
+as String?,lostFoundLocation: freezed == lostFoundLocation ? _self.lostFoundLocation : lostFoundLocation // ignore: cast_nullable_to_non_nullable
+as String?,lostFoundImages: freezed == lostFoundImages ? _self.lostFoundImages : lostFoundImages // ignore: cast_nullable_to_non_nullable
+as List<String>?,applicantNickname: freezed == applicantNickname ? _self.applicantNickname : applicantNickname // ignore: cast_nullable_to_non_nullable
+as String?,applicantAvatar: freezed == applicantAvatar ? _self.applicantAvatar : applicantAvatar // ignore: cast_nullable_to_non_nullable
+as String?,createTime: freezed == createTime ? _self.createTime : createTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,updateTime: freezed == updateTime ? _self.updateTime : updateTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
@@ -167,10 +174,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int lostFoundId,  int applicantId,  String description,  String? applicantNickname,  String? applicantPhone,  String? features,  String? contactInfo,  List<String>? proofImages,  String status,  String? reviewerId,  String? reviewComment,  DateTime? reviewedTime,  DateTime? createTime,  DateTime? updateTime)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int lostFoundId,  int userId,  String? claimType,  String? description,  String? features,  String? contact,  List<String>? proofImages,  DateTime? expectTime,  String status,  String? statusText,  String? remark,  int? reviewedBy,  String? reviewerNickname,  DateTime? reviewedTime,  String? lostFoundTitle,  String? lostFoundLocation,  List<String>? lostFoundImages,  String? applicantNickname,  String? applicantAvatar,  DateTime? createTime,  DateTime? updateTime)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Claim() when $default != null:
-return $default(_that.id,_that.lostFoundId,_that.applicantId,_that.description,_that.applicantNickname,_that.applicantPhone,_that.features,_that.contactInfo,_that.proofImages,_that.status,_that.reviewerId,_that.reviewComment,_that.reviewedTime,_that.createTime,_that.updateTime);case _:
+return $default(_that.id,_that.lostFoundId,_that.userId,_that.claimType,_that.description,_that.features,_that.contact,_that.proofImages,_that.expectTime,_that.status,_that.statusText,_that.remark,_that.reviewedBy,_that.reviewerNickname,_that.reviewedTime,_that.lostFoundTitle,_that.lostFoundLocation,_that.lostFoundImages,_that.applicantNickname,_that.applicantAvatar,_that.createTime,_that.updateTime);case _:
   return orElse();
 
 }
@@ -188,10 +195,10 @@ return $default(_that.id,_that.lostFoundId,_that.applicantId,_that.description,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int lostFoundId,  int applicantId,  String description,  String? applicantNickname,  String? applicantPhone,  String? features,  String? contactInfo,  List<String>? proofImages,  String status,  String? reviewerId,  String? reviewComment,  DateTime? reviewedTime,  DateTime? createTime,  DateTime? updateTime)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int lostFoundId,  int userId,  String? claimType,  String? description,  String? features,  String? contact,  List<String>? proofImages,  DateTime? expectTime,  String status,  String? statusText,  String? remark,  int? reviewedBy,  String? reviewerNickname,  DateTime? reviewedTime,  String? lostFoundTitle,  String? lostFoundLocation,  List<String>? lostFoundImages,  String? applicantNickname,  String? applicantAvatar,  DateTime? createTime,  DateTime? updateTime)  $default,) {final _that = this;
 switch (_that) {
 case _Claim():
-return $default(_that.id,_that.lostFoundId,_that.applicantId,_that.description,_that.applicantNickname,_that.applicantPhone,_that.features,_that.contactInfo,_that.proofImages,_that.status,_that.reviewerId,_that.reviewComment,_that.reviewedTime,_that.createTime,_that.updateTime);case _:
+return $default(_that.id,_that.lostFoundId,_that.userId,_that.claimType,_that.description,_that.features,_that.contact,_that.proofImages,_that.expectTime,_that.status,_that.statusText,_that.remark,_that.reviewedBy,_that.reviewerNickname,_that.reviewedTime,_that.lostFoundTitle,_that.lostFoundLocation,_that.lostFoundImages,_that.applicantNickname,_that.applicantAvatar,_that.createTime,_that.updateTime);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +215,10 @@ return $default(_that.id,_that.lostFoundId,_that.applicantId,_that.description,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int lostFoundId,  int applicantId,  String description,  String? applicantNickname,  String? applicantPhone,  String? features,  String? contactInfo,  List<String>? proofImages,  String status,  String? reviewerId,  String? reviewComment,  DateTime? reviewedTime,  DateTime? createTime,  DateTime? updateTime)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int lostFoundId,  int userId,  String? claimType,  String? description,  String? features,  String? contact,  List<String>? proofImages,  DateTime? expectTime,  String status,  String? statusText,  String? remark,  int? reviewedBy,  String? reviewerNickname,  DateTime? reviewedTime,  String? lostFoundTitle,  String? lostFoundLocation,  List<String>? lostFoundImages,  String? applicantNickname,  String? applicantAvatar,  DateTime? createTime,  DateTime? updateTime)?  $default,) {final _that = this;
 switch (_that) {
 case _Claim() when $default != null:
-return $default(_that.id,_that.lostFoundId,_that.applicantId,_that.description,_that.applicantNickname,_that.applicantPhone,_that.features,_that.contactInfo,_that.proofImages,_that.status,_that.reviewerId,_that.reviewComment,_that.reviewedTime,_that.createTime,_that.updateTime);case _:
+return $default(_that.id,_that.lostFoundId,_that.userId,_that.claimType,_that.description,_that.features,_that.contact,_that.proofImages,_that.expectTime,_that.status,_that.statusText,_that.remark,_that.reviewedBy,_that.reviewerNickname,_that.reviewedTime,_that.lostFoundTitle,_that.lostFoundLocation,_that.lostFoundImages,_that.applicantNickname,_that.applicantAvatar,_that.createTime,_that.updateTime);case _:
   return null;
 
 }
@@ -223,17 +230,16 @@ return $default(_that.id,_that.lostFoundId,_that.applicantId,_that.description,_
 @JsonSerializable()
 
 class _Claim implements Claim {
-  const _Claim({required this.id, required this.lostFoundId, required this.applicantId, required this.description, this.applicantNickname, this.applicantPhone, this.features, this.contactInfo, final  List<String>? proofImages, required this.status, this.reviewerId, this.reviewComment, this.reviewedTime, this.createTime, this.updateTime}): _proofImages = proofImages;
+  const _Claim({required this.id, required this.lostFoundId, required this.userId, this.claimType, this.description, this.features, this.contact, final  List<String>? proofImages, this.expectTime, required this.status, this.statusText, this.remark, this.reviewedBy, this.reviewerNickname, this.reviewedTime, this.lostFoundTitle, this.lostFoundLocation, final  List<String>? lostFoundImages, this.applicantNickname, this.applicantAvatar, this.createTime, this.updateTime}): _proofImages = proofImages,_lostFoundImages = lostFoundImages;
   factory _Claim.fromJson(Map<String, dynamic> json) => _$ClaimFromJson(json);
 
 @override final  int id;
 @override final  int lostFoundId;
-@override final  int applicantId;
-@override final  String description;
-@override final  String? applicantNickname;
-@override final  String? applicantPhone;
+@override final  int userId;
+@override final  String? claimType;
+@override final  String? description;
 @override final  String? features;
-@override final  String? contactInfo;
+@override final  String? contact;
  final  List<String>? _proofImages;
 @override List<String>? get proofImages {
   final value = _proofImages;
@@ -243,10 +249,26 @@ class _Claim implements Claim {
   return EqualUnmodifiableListView(value);
 }
 
+@override final  DateTime? expectTime;
 @override final  String status;
-@override final  String? reviewerId;
-@override final  String? reviewComment;
+@override final  String? statusText;
+@override final  String? remark;
+@override final  int? reviewedBy;
+@override final  String? reviewerNickname;
 @override final  DateTime? reviewedTime;
+@override final  String? lostFoundTitle;
+@override final  String? lostFoundLocation;
+ final  List<String>? _lostFoundImages;
+@override List<String>? get lostFoundImages {
+  final value = _lostFoundImages;
+  if (value == null) return null;
+  if (_lostFoundImages is EqualUnmodifiableListView) return _lostFoundImages;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+@override final  String? applicantNickname;
+@override final  String? applicantAvatar;
 @override final  DateTime? createTime;
 @override final  DateTime? updateTime;
 
@@ -263,16 +285,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Claim&&(identical(other.id, id) || other.id == id)&&(identical(other.lostFoundId, lostFoundId) || other.lostFoundId == lostFoundId)&&(identical(other.applicantId, applicantId) || other.applicantId == applicantId)&&(identical(other.description, description) || other.description == description)&&(identical(other.applicantNickname, applicantNickname) || other.applicantNickname == applicantNickname)&&(identical(other.applicantPhone, applicantPhone) || other.applicantPhone == applicantPhone)&&(identical(other.features, features) || other.features == features)&&(identical(other.contactInfo, contactInfo) || other.contactInfo == contactInfo)&&const DeepCollectionEquality().equals(other._proofImages, _proofImages)&&(identical(other.status, status) || other.status == status)&&(identical(other.reviewerId, reviewerId) || other.reviewerId == reviewerId)&&(identical(other.reviewComment, reviewComment) || other.reviewComment == reviewComment)&&(identical(other.reviewedTime, reviewedTime) || other.reviewedTime == reviewedTime)&&(identical(other.createTime, createTime) || other.createTime == createTime)&&(identical(other.updateTime, updateTime) || other.updateTime == updateTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Claim&&(identical(other.id, id) || other.id == id)&&(identical(other.lostFoundId, lostFoundId) || other.lostFoundId == lostFoundId)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.claimType, claimType) || other.claimType == claimType)&&(identical(other.description, description) || other.description == description)&&(identical(other.features, features) || other.features == features)&&(identical(other.contact, contact) || other.contact == contact)&&const DeepCollectionEquality().equals(other._proofImages, _proofImages)&&(identical(other.expectTime, expectTime) || other.expectTime == expectTime)&&(identical(other.status, status) || other.status == status)&&(identical(other.statusText, statusText) || other.statusText == statusText)&&(identical(other.remark, remark) || other.remark == remark)&&(identical(other.reviewedBy, reviewedBy) || other.reviewedBy == reviewedBy)&&(identical(other.reviewerNickname, reviewerNickname) || other.reviewerNickname == reviewerNickname)&&(identical(other.reviewedTime, reviewedTime) || other.reviewedTime == reviewedTime)&&(identical(other.lostFoundTitle, lostFoundTitle) || other.lostFoundTitle == lostFoundTitle)&&(identical(other.lostFoundLocation, lostFoundLocation) || other.lostFoundLocation == lostFoundLocation)&&const DeepCollectionEquality().equals(other._lostFoundImages, _lostFoundImages)&&(identical(other.applicantNickname, applicantNickname) || other.applicantNickname == applicantNickname)&&(identical(other.applicantAvatar, applicantAvatar) || other.applicantAvatar == applicantAvatar)&&(identical(other.createTime, createTime) || other.createTime == createTime)&&(identical(other.updateTime, updateTime) || other.updateTime == updateTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,lostFoundId,applicantId,description,applicantNickname,applicantPhone,features,contactInfo,const DeepCollectionEquality().hash(_proofImages),status,reviewerId,reviewComment,reviewedTime,createTime,updateTime);
+int get hashCode => Object.hashAll([runtimeType,id,lostFoundId,userId,claimType,description,features,contact,const DeepCollectionEquality().hash(_proofImages),expectTime,status,statusText,remark,reviewedBy,reviewerNickname,reviewedTime,lostFoundTitle,lostFoundLocation,const DeepCollectionEquality().hash(_lostFoundImages),applicantNickname,applicantAvatar,createTime,updateTime]);
 
 @override
 String toString() {
-  return 'Claim(id: $id, lostFoundId: $lostFoundId, applicantId: $applicantId, description: $description, applicantNickname: $applicantNickname, applicantPhone: $applicantPhone, features: $features, contactInfo: $contactInfo, proofImages: $proofImages, status: $status, reviewerId: $reviewerId, reviewComment: $reviewComment, reviewedTime: $reviewedTime, createTime: $createTime, updateTime: $updateTime)';
+  return 'Claim(id: $id, lostFoundId: $lostFoundId, userId: $userId, claimType: $claimType, description: $description, features: $features, contact: $contact, proofImages: $proofImages, expectTime: $expectTime, status: $status, statusText: $statusText, remark: $remark, reviewedBy: $reviewedBy, reviewerNickname: $reviewerNickname, reviewedTime: $reviewedTime, lostFoundTitle: $lostFoundTitle, lostFoundLocation: $lostFoundLocation, lostFoundImages: $lostFoundImages, applicantNickname: $applicantNickname, applicantAvatar: $applicantAvatar, createTime: $createTime, updateTime: $updateTime)';
 }
 
 
@@ -283,7 +305,7 @@ abstract mixin class _$ClaimCopyWith<$Res> implements $ClaimCopyWith<$Res> {
   factory _$ClaimCopyWith(_Claim value, $Res Function(_Claim) _then) = __$ClaimCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int lostFoundId, int applicantId, String description, String? applicantNickname, String? applicantPhone, String? features, String? contactInfo, List<String>? proofImages, String status, String? reviewerId, String? reviewComment, DateTime? reviewedTime, DateTime? createTime, DateTime? updateTime
+ int id, int lostFoundId, int userId, String? claimType, String? description, String? features, String? contact, List<String>? proofImages, DateTime? expectTime, String status, String? statusText, String? remark, int? reviewedBy, String? reviewerNickname, DateTime? reviewedTime, String? lostFoundTitle, String? lostFoundLocation, List<String>? lostFoundImages, String? applicantNickname, String? applicantAvatar, DateTime? createTime, DateTime? updateTime
 });
 
 
@@ -300,22 +322,29 @@ class __$ClaimCopyWithImpl<$Res>
 
 /// Create a copy of Claim
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? lostFoundId = null,Object? applicantId = null,Object? description = null,Object? applicantNickname = freezed,Object? applicantPhone = freezed,Object? features = freezed,Object? contactInfo = freezed,Object? proofImages = freezed,Object? status = null,Object? reviewerId = freezed,Object? reviewComment = freezed,Object? reviewedTime = freezed,Object? createTime = freezed,Object? updateTime = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? lostFoundId = null,Object? userId = null,Object? claimType = freezed,Object? description = freezed,Object? features = freezed,Object? contact = freezed,Object? proofImages = freezed,Object? expectTime = freezed,Object? status = null,Object? statusText = freezed,Object? remark = freezed,Object? reviewedBy = freezed,Object? reviewerNickname = freezed,Object? reviewedTime = freezed,Object? lostFoundTitle = freezed,Object? lostFoundLocation = freezed,Object? lostFoundImages = freezed,Object? applicantNickname = freezed,Object? applicantAvatar = freezed,Object? createTime = freezed,Object? updateTime = freezed,}) {
   return _then(_Claim(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,lostFoundId: null == lostFoundId ? _self.lostFoundId : lostFoundId // ignore: cast_nullable_to_non_nullable
-as int,applicantId: null == applicantId ? _self.applicantId : applicantId // ignore: cast_nullable_to_non_nullable
-as int,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,applicantNickname: freezed == applicantNickname ? _self.applicantNickname : applicantNickname // ignore: cast_nullable_to_non_nullable
-as String?,applicantPhone: freezed == applicantPhone ? _self.applicantPhone : applicantPhone // ignore: cast_nullable_to_non_nullable
+as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int,claimType: freezed == claimType ? _self.claimType : claimType // ignore: cast_nullable_to_non_nullable
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,features: freezed == features ? _self.features : features // ignore: cast_nullable_to_non_nullable
-as String?,contactInfo: freezed == contactInfo ? _self.contactInfo : contactInfo // ignore: cast_nullable_to_non_nullable
+as String?,contact: freezed == contact ? _self.contact : contact // ignore: cast_nullable_to_non_nullable
 as String?,proofImages: freezed == proofImages ? _self._proofImages : proofImages // ignore: cast_nullable_to_non_nullable
-as List<String>?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,reviewerId: freezed == reviewerId ? _self.reviewerId : reviewerId // ignore: cast_nullable_to_non_nullable
-as String?,reviewComment: freezed == reviewComment ? _self.reviewComment : reviewComment // ignore: cast_nullable_to_non_nullable
+as List<String>?,expectTime: freezed == expectTime ? _self.expectTime : expectTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,statusText: freezed == statusText ? _self.statusText : statusText // ignore: cast_nullable_to_non_nullable
+as String?,remark: freezed == remark ? _self.remark : remark // ignore: cast_nullable_to_non_nullable
+as String?,reviewedBy: freezed == reviewedBy ? _self.reviewedBy : reviewedBy // ignore: cast_nullable_to_non_nullable
+as int?,reviewerNickname: freezed == reviewerNickname ? _self.reviewerNickname : reviewerNickname // ignore: cast_nullable_to_non_nullable
 as String?,reviewedTime: freezed == reviewedTime ? _self.reviewedTime : reviewedTime // ignore: cast_nullable_to_non_nullable
-as DateTime?,createTime: freezed == createTime ? _self.createTime : createTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,lostFoundTitle: freezed == lostFoundTitle ? _self.lostFoundTitle : lostFoundTitle // ignore: cast_nullable_to_non_nullable
+as String?,lostFoundLocation: freezed == lostFoundLocation ? _self.lostFoundLocation : lostFoundLocation // ignore: cast_nullable_to_non_nullable
+as String?,lostFoundImages: freezed == lostFoundImages ? _self._lostFoundImages : lostFoundImages // ignore: cast_nullable_to_non_nullable
+as List<String>?,applicantNickname: freezed == applicantNickname ? _self.applicantNickname : applicantNickname // ignore: cast_nullable_to_non_nullable
+as String?,applicantAvatar: freezed == applicantAvatar ? _self.applicantAvatar : applicantAvatar // ignore: cast_nullable_to_non_nullable
+as String?,createTime: freezed == createTime ? _self.createTime : createTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,updateTime: freezed == updateTime ? _self.updateTime : updateTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
@@ -328,7 +357,7 @@ as DateTime?,
 /// @nodoc
 mixin _$CreateClaimRequest {
 
- String get description; String? get features; String get contactInfo; List<String>? get proofImages;
+ int get lostFoundId; String get claimType; String get description; String? get features; String get contact; List<String>? get proofImages; DateTime? get expectTime;
 /// Create a copy of CreateClaimRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -341,16 +370,16 @@ $CreateClaimRequestCopyWith<CreateClaimRequest> get copyWith => _$CreateClaimReq
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateClaimRequest&&(identical(other.description, description) || other.description == description)&&(identical(other.features, features) || other.features == features)&&(identical(other.contactInfo, contactInfo) || other.contactInfo == contactInfo)&&const DeepCollectionEquality().equals(other.proofImages, proofImages));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateClaimRequest&&(identical(other.lostFoundId, lostFoundId) || other.lostFoundId == lostFoundId)&&(identical(other.claimType, claimType) || other.claimType == claimType)&&(identical(other.description, description) || other.description == description)&&(identical(other.features, features) || other.features == features)&&(identical(other.contact, contact) || other.contact == contact)&&const DeepCollectionEquality().equals(other.proofImages, proofImages)&&(identical(other.expectTime, expectTime) || other.expectTime == expectTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,description,features,contactInfo,const DeepCollectionEquality().hash(proofImages));
+int get hashCode => Object.hash(runtimeType,lostFoundId,claimType,description,features,contact,const DeepCollectionEquality().hash(proofImages),expectTime);
 
 @override
 String toString() {
-  return 'CreateClaimRequest(description: $description, features: $features, contactInfo: $contactInfo, proofImages: $proofImages)';
+  return 'CreateClaimRequest(lostFoundId: $lostFoundId, claimType: $claimType, description: $description, features: $features, contact: $contact, proofImages: $proofImages, expectTime: $expectTime)';
 }
 
 
@@ -361,7 +390,7 @@ abstract mixin class $CreateClaimRequestCopyWith<$Res>  {
   factory $CreateClaimRequestCopyWith(CreateClaimRequest value, $Res Function(CreateClaimRequest) _then) = _$CreateClaimRequestCopyWithImpl;
 @useResult
 $Res call({
- String description, String? features, String contactInfo, List<String>? proofImages
+ int lostFoundId, String claimType, String description, String? features, String contact, List<String>? proofImages, DateTime? expectTime
 });
 
 
@@ -378,13 +407,16 @@ class _$CreateClaimRequestCopyWithImpl<$Res>
 
 /// Create a copy of CreateClaimRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? description = null,Object? features = freezed,Object? contactInfo = null,Object? proofImages = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? lostFoundId = null,Object? claimType = null,Object? description = null,Object? features = freezed,Object? contact = null,Object? proofImages = freezed,Object? expectTime = freezed,}) {
   return _then(_self.copyWith(
-description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+lostFoundId: null == lostFoundId ? _self.lostFoundId : lostFoundId // ignore: cast_nullable_to_non_nullable
+as int,claimType: null == claimType ? _self.claimType : claimType // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,features: freezed == features ? _self.features : features // ignore: cast_nullable_to_non_nullable
-as String?,contactInfo: null == contactInfo ? _self.contactInfo : contactInfo // ignore: cast_nullable_to_non_nullable
+as String?,contact: null == contact ? _self.contact : contact // ignore: cast_nullable_to_non_nullable
 as String,proofImages: freezed == proofImages ? _self.proofImages : proofImages // ignore: cast_nullable_to_non_nullable
-as List<String>?,
+as List<String>?,expectTime: freezed == expectTime ? _self.expectTime : expectTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -469,10 +501,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String description,  String? features,  String contactInfo,  List<String>? proofImages)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int lostFoundId,  String claimType,  String description,  String? features,  String contact,  List<String>? proofImages,  DateTime? expectTime)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateClaimRequest() when $default != null:
-return $default(_that.description,_that.features,_that.contactInfo,_that.proofImages);case _:
+return $default(_that.lostFoundId,_that.claimType,_that.description,_that.features,_that.contact,_that.proofImages,_that.expectTime);case _:
   return orElse();
 
 }
@@ -490,10 +522,10 @@ return $default(_that.description,_that.features,_that.contactInfo,_that.proofIm
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String description,  String? features,  String contactInfo,  List<String>? proofImages)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int lostFoundId,  String claimType,  String description,  String? features,  String contact,  List<String>? proofImages,  DateTime? expectTime)  $default,) {final _that = this;
 switch (_that) {
 case _CreateClaimRequest():
-return $default(_that.description,_that.features,_that.contactInfo,_that.proofImages);case _:
+return $default(_that.lostFoundId,_that.claimType,_that.description,_that.features,_that.contact,_that.proofImages,_that.expectTime);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -510,10 +542,10 @@ return $default(_that.description,_that.features,_that.contactInfo,_that.proofIm
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String description,  String? features,  String contactInfo,  List<String>? proofImages)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int lostFoundId,  String claimType,  String description,  String? features,  String contact,  List<String>? proofImages,  DateTime? expectTime)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateClaimRequest() when $default != null:
-return $default(_that.description,_that.features,_that.contactInfo,_that.proofImages);case _:
+return $default(_that.lostFoundId,_that.claimType,_that.description,_that.features,_that.contact,_that.proofImages,_that.expectTime);case _:
   return null;
 
 }
@@ -525,12 +557,14 @@ return $default(_that.description,_that.features,_that.contactInfo,_that.proofIm
 @JsonSerializable()
 
 class _CreateClaimRequest implements CreateClaimRequest {
-  const _CreateClaimRequest({required this.description, this.features, required this.contactInfo, final  List<String>? proofImages}): _proofImages = proofImages;
+  const _CreateClaimRequest({required this.lostFoundId, required this.claimType, required this.description, this.features, required this.contact, final  List<String>? proofImages, this.expectTime}): _proofImages = proofImages;
   factory _CreateClaimRequest.fromJson(Map<String, dynamic> json) => _$CreateClaimRequestFromJson(json);
 
+@override final  int lostFoundId;
+@override final  String claimType;
 @override final  String description;
 @override final  String? features;
-@override final  String contactInfo;
+@override final  String contact;
  final  List<String>? _proofImages;
 @override List<String>? get proofImages {
   final value = _proofImages;
@@ -540,6 +574,7 @@ class _CreateClaimRequest implements CreateClaimRequest {
   return EqualUnmodifiableListView(value);
 }
 
+@override final  DateTime? expectTime;
 
 /// Create a copy of CreateClaimRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -554,16 +589,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateClaimRequest&&(identical(other.description, description) || other.description == description)&&(identical(other.features, features) || other.features == features)&&(identical(other.contactInfo, contactInfo) || other.contactInfo == contactInfo)&&const DeepCollectionEquality().equals(other._proofImages, _proofImages));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreateClaimRequest&&(identical(other.lostFoundId, lostFoundId) || other.lostFoundId == lostFoundId)&&(identical(other.claimType, claimType) || other.claimType == claimType)&&(identical(other.description, description) || other.description == description)&&(identical(other.features, features) || other.features == features)&&(identical(other.contact, contact) || other.contact == contact)&&const DeepCollectionEquality().equals(other._proofImages, _proofImages)&&(identical(other.expectTime, expectTime) || other.expectTime == expectTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,description,features,contactInfo,const DeepCollectionEquality().hash(_proofImages));
+int get hashCode => Object.hash(runtimeType,lostFoundId,claimType,description,features,contact,const DeepCollectionEquality().hash(_proofImages),expectTime);
 
 @override
 String toString() {
-  return 'CreateClaimRequest(description: $description, features: $features, contactInfo: $contactInfo, proofImages: $proofImages)';
+  return 'CreateClaimRequest(lostFoundId: $lostFoundId, claimType: $claimType, description: $description, features: $features, contact: $contact, proofImages: $proofImages, expectTime: $expectTime)';
 }
 
 
@@ -574,7 +609,7 @@ abstract mixin class _$CreateClaimRequestCopyWith<$Res> implements $CreateClaimR
   factory _$CreateClaimRequestCopyWith(_CreateClaimRequest value, $Res Function(_CreateClaimRequest) _then) = __$CreateClaimRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String description, String? features, String contactInfo, List<String>? proofImages
+ int lostFoundId, String claimType, String description, String? features, String contact, List<String>? proofImages, DateTime? expectTime
 });
 
 
@@ -591,13 +626,16 @@ class __$CreateClaimRequestCopyWithImpl<$Res>
 
 /// Create a copy of CreateClaimRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? description = null,Object? features = freezed,Object? contactInfo = null,Object? proofImages = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? lostFoundId = null,Object? claimType = null,Object? description = null,Object? features = freezed,Object? contact = null,Object? proofImages = freezed,Object? expectTime = freezed,}) {
   return _then(_CreateClaimRequest(
-description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+lostFoundId: null == lostFoundId ? _self.lostFoundId : lostFoundId // ignore: cast_nullable_to_non_nullable
+as int,claimType: null == claimType ? _self.claimType : claimType // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,features: freezed == features ? _self.features : features // ignore: cast_nullable_to_non_nullable
-as String?,contactInfo: null == contactInfo ? _self.contactInfo : contactInfo // ignore: cast_nullable_to_non_nullable
+as String?,contact: null == contact ? _self.contact : contact // ignore: cast_nullable_to_non_nullable
 as String,proofImages: freezed == proofImages ? _self._proofImages : proofImages // ignore: cast_nullable_to_non_nullable
-as List<String>?,
+as List<String>?,expectTime: freezed == expectTime ? _self.expectTime : expectTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -608,7 +646,7 @@ as List<String>?,
 /// @nodoc
 mixin _$ReviewClaimRequest {
 
- String get status; String? get comment;
+ String get action; String? get remark;
 /// Create a copy of ReviewClaimRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -621,16 +659,16 @@ $ReviewClaimRequestCopyWith<ReviewClaimRequest> get copyWith => _$ReviewClaimReq
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReviewClaimRequest&&(identical(other.status, status) || other.status == status)&&(identical(other.comment, comment) || other.comment == comment));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReviewClaimRequest&&(identical(other.action, action) || other.action == action)&&(identical(other.remark, remark) || other.remark == remark));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,status,comment);
+int get hashCode => Object.hash(runtimeType,action,remark);
 
 @override
 String toString() {
-  return 'ReviewClaimRequest(status: $status, comment: $comment)';
+  return 'ReviewClaimRequest(action: $action, remark: $remark)';
 }
 
 
@@ -641,7 +679,7 @@ abstract mixin class $ReviewClaimRequestCopyWith<$Res>  {
   factory $ReviewClaimRequestCopyWith(ReviewClaimRequest value, $Res Function(ReviewClaimRequest) _then) = _$ReviewClaimRequestCopyWithImpl;
 @useResult
 $Res call({
- String status, String? comment
+ String action, String? remark
 });
 
 
@@ -658,10 +696,10 @@ class _$ReviewClaimRequestCopyWithImpl<$Res>
 
 /// Create a copy of ReviewClaimRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? comment = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? action = null,Object? remark = freezed,}) {
   return _then(_self.copyWith(
-status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
+action: null == action ? _self.action : action // ignore: cast_nullable_to_non_nullable
+as String,remark: freezed == remark ? _self.remark : remark // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -747,10 +785,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String status,  String? comment)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String action,  String? remark)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ReviewClaimRequest() when $default != null:
-return $default(_that.status,_that.comment);case _:
+return $default(_that.action,_that.remark);case _:
   return orElse();
 
 }
@@ -768,10 +806,10 @@ return $default(_that.status,_that.comment);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String status,  String? comment)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String action,  String? remark)  $default,) {final _that = this;
 switch (_that) {
 case _ReviewClaimRequest():
-return $default(_that.status,_that.comment);case _:
+return $default(_that.action,_that.remark);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -788,10 +826,10 @@ return $default(_that.status,_that.comment);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String status,  String? comment)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String action,  String? remark)?  $default,) {final _that = this;
 switch (_that) {
 case _ReviewClaimRequest() when $default != null:
-return $default(_that.status,_that.comment);case _:
+return $default(_that.action,_that.remark);case _:
   return null;
 
 }
@@ -803,11 +841,11 @@ return $default(_that.status,_that.comment);case _:
 @JsonSerializable()
 
 class _ReviewClaimRequest implements ReviewClaimRequest {
-  const _ReviewClaimRequest({required this.status, this.comment});
+  const _ReviewClaimRequest({required this.action, this.remark});
   factory _ReviewClaimRequest.fromJson(Map<String, dynamic> json) => _$ReviewClaimRequestFromJson(json);
 
-@override final  String status;
-@override final  String? comment;
+@override final  String action;
+@override final  String? remark;
 
 /// Create a copy of ReviewClaimRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -822,16 +860,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ReviewClaimRequest&&(identical(other.status, status) || other.status == status)&&(identical(other.comment, comment) || other.comment == comment));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ReviewClaimRequest&&(identical(other.action, action) || other.action == action)&&(identical(other.remark, remark) || other.remark == remark));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,status,comment);
+int get hashCode => Object.hash(runtimeType,action,remark);
 
 @override
 String toString() {
-  return 'ReviewClaimRequest(status: $status, comment: $comment)';
+  return 'ReviewClaimRequest(action: $action, remark: $remark)';
 }
 
 
@@ -842,7 +880,7 @@ abstract mixin class _$ReviewClaimRequestCopyWith<$Res> implements $ReviewClaimR
   factory _$ReviewClaimRequestCopyWith(_ReviewClaimRequest value, $Res Function(_ReviewClaimRequest) _then) = __$ReviewClaimRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String status, String? comment
+ String action, String? remark
 });
 
 
@@ -859,10 +897,10 @@ class __$ReviewClaimRequestCopyWithImpl<$Res>
 
 /// Create a copy of ReviewClaimRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? comment = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? action = null,Object? remark = freezed,}) {
   return _then(_ReviewClaimRequest(
-status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
+action: null == action ? _self.action : action // ignore: cast_nullable_to_non_nullable
+as String,remark: freezed == remark ? _self.remark : remark // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

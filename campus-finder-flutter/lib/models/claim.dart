@@ -8,17 +8,24 @@ abstract class Claim with _$Claim {
   const factory Claim({
     required int id,
     required int lostFoundId,
-    required int applicantId,
-    required String description,
-    String? applicantNickname,
-    String? applicantPhone,
+    required int userId,
+    String? claimType,
+    String? description,
     String? features,
-    String? contactInfo,
+    String? contact,
     List<String>? proofImages,
+    DateTime? expectTime,
     required String status,
-    String? reviewerId,
-    String? reviewComment,
+    String? statusText,
+    String? remark,
+    int? reviewedBy,
+    String? reviewerNickname,
     DateTime? reviewedTime,
+    String? lostFoundTitle,
+    String? lostFoundLocation,
+    List<String>? lostFoundImages,
+    String? applicantNickname,
+    String? applicantAvatar,
     DateTime? createTime,
     DateTime? updateTime,
   }) = _Claim;
@@ -29,10 +36,13 @@ abstract class Claim with _$Claim {
 @freezed
 abstract class CreateClaimRequest with _$CreateClaimRequest {
   const factory CreateClaimRequest({
+    required int lostFoundId,
+    required String claimType,
     required String description,
     String? features,
-    required String contactInfo,
+    required String contact,
     List<String>? proofImages,
+    DateTime? expectTime,
   }) = _CreateClaimRequest;
 
   factory CreateClaimRequest.fromJson(Map<String, dynamic> json) =>
@@ -40,18 +50,23 @@ abstract class CreateClaimRequest with _$CreateClaimRequest {
 
   @override
   Map<String, dynamic> toJson() => {
+        'lostFoundId': lostFoundId,
+        'claimType': claimType,
         'description': description,
         if (features != null) 'features': features,
-        'contactInfo': contactInfo,
+        'contact': contact,
         if (proofImages != null) 'proofImages': proofImages,
+        if (expectTime != null)
+          'expectTime':
+              expectTime!.toIso8601String().split('.').first.replaceAll('T', ' '),
       };
 }
 
 @freezed
 abstract class ReviewClaimRequest with _$ReviewClaimRequest {
   const factory ReviewClaimRequest({
-    required String status,
-    String? comment,
+    required String action,
+    String? remark,
   }) = _ReviewClaimRequest;
 
   factory ReviewClaimRequest.fromJson(Map<String, dynamic> json) =>
@@ -59,7 +74,7 @@ abstract class ReviewClaimRequest with _$ReviewClaimRequest {
 
   @override
   Map<String, dynamic> toJson() => {
-        'status': status,
-        if (comment != null) 'comment': comment,
+        'action': action,
+        if (remark != null) 'remark': remark,
       };
 }
