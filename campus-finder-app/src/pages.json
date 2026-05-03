@@ -1,4 +1,10 @@
 {
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+    }
+  },
   "pages": [
     {
       "path": "pages/index/index",
@@ -83,20 +89,20 @@
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "static/tab/home.png",
-        "selectedIconPath": "static/tab/home-active.png"
+        "iconPath": "/static/tab/home.png",
+        "selectedIconPath": "/static/tab/home-active.png"
       },
       {
         "pagePath": "pages/lost-found/index",
         "text": "失物招领",
-        "iconPath": "static/tab/search.png",
-        "selectedIconPath": "static/tab/search-active.png"
+        "iconPath": "/static/tab/search.png",
+        "selectedIconPath": "/static/tab/search-active.png"
       },
       {
         "pagePath": "pages/my/index",
         "text": "我的",
-        "iconPath": "static/tab/my.png",
-        "selectedIconPath": "static/tab/my-active.png"
+        "iconPath": "/static/tab/my.png",
+        "selectedIconPath": "/static/tab/my-active.png"
       }
     ]
   }
