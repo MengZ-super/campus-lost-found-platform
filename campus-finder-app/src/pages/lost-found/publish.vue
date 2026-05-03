@@ -56,6 +56,7 @@
           :localdata="categoryOptions"
           placeholder="请选择分类"
           class="data-select"
+          @change="onCategoryChange"
         />
       </uni-forms-item>
 
@@ -223,6 +224,13 @@ const formRef = ref(null)
 const loading = ref(false)
 const categoryList = ref([])
 
+// 监听分类选择，清除验证错误
+function onCategoryChange(e) {
+  if (formData.categoryId) {
+    formRef.value?.clearValidate('categoryId')
+  }
+}
+
 const formData = reactive({
   itemType: 'lost',
   categoryId: '',
@@ -320,7 +328,7 @@ async function handleSubmit() {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .publish-page {
   padding: $spacing-md;
   padding-bottom: 160rpx;

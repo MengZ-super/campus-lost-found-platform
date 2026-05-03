@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-与用户说中文时
+与用户沟通说中文
 
 ## 项目结构
 
