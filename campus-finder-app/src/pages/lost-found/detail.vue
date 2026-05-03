@@ -1,31 +1,51 @@
 <template>
   <view class="detail-page">
     <!-- 加载状态 -->
-    <view v-if="loading" class="loading-wrapper">
+    <view
+      v-if="loading"
+      class="loading-wrapper"
+    >
       <text>加载中...</text>
     </view>
 
     <!-- 错误状态 -->
-    <view v-else-if="error" class="error-wrapper">
+    <view
+      v-else-if="error"
+      class="error-wrapper"
+    >
       <text>{{ error }}</text>
-      <button @click="loadDetail" size="mini">重试</button>
+      <button
+        size="mini"
+        @click="loadDetail"
+      >
+        重试
+      </button>
     </view>
 
     <!-- 详情内容 -->
-    <scroll-view v-else-if="detail.id" class="detail-content" scroll-y>
+    <scroll-view
+      v-else-if="detail.id"
+      class="detail-content"
+      scroll-y
+    >
       <!-- 图片轮播 -->
       <image-carousel
         v-if="detail.images && detail.images.length > 0"
         :images="detail.images"
       />
-      <view v-else class="no-image">
+      <view
+        v-else
+        class="no-image"
+      >
         <text>暂无图片</text>
       </view>
 
       <!-- 基本信息 -->
       <view class="info-section">
         <view class="title-row">
-          <text class="title">{{ detail.title }}</text>
+          <text class="title">
+            {{ detail.title }}
+          </text>
           <status-badge :status="detail.status" />
         </view>
 
@@ -38,49 +58,92 @@
 
       <!-- 物品信息 -->
       <view class="info-card">
-        <view class="info-title">物品信息</view>
+        <view class="info-title">
+          物品信息
+        </view>
         <view class="info-grid">
           <view class="info-item">
-            <text class="info-label">分类</text>
-            <text class="info-value">{{ detail.categoryName || '未分类' }}</text>
+            <text class="info-label">
+              分类
+            </text>
+            <text class="info-value">
+              {{ detail.categoryName || '未分类' }}
+            </text>
           </view>
           <view class="info-item">
-            <text class="info-label">地点</text>
-            <text class="info-value">{{ detail.location || '未知地点' }}</text>
+            <text class="info-label">
+              地点
+            </text>
+            <text class="info-value">
+              {{ detail.location || '未知地点' }}
+            </text>
           </view>
           <view class="info-item">
-            <text class="info-label">时间</text>
-            <text class="info-value">{{ detail.happenedTime ? formatDate(detail.happenedTime) : '未知时间' }}</text>
+            <text class="info-label">
+              时间
+            </text>
+            <text class="info-value">
+              {{ detail.happenedTime ? formatDate(detail.happenedTime) : '未知时间' }}
+            </text>
           </view>
-          <view class="info-item" v-if="detail.campus">
-            <text class="info-label">校区</text>
-            <text class="info-value">{{ detail.campus }}</text>
+          <view
+            v-if="detail.campus"
+            class="info-item"
+          >
+            <text class="info-label">
+              校区
+            </text>
+            <text class="info-value">
+              {{ detail.campus }}
+            </text>
           </view>
         </view>
       </view>
 
       <!-- 描述 -->
-      <view class="info-card" v-if="detail.description">
-        <view class="info-title">详细描述</view>
-        <text class="description">{{ detail.description }}</text>
+      <view
+        v-if="detail.description"
+        class="info-card"
+      >
+        <view class="info-title">
+          详细描述
+        </view>
+        <text class="description">
+          {{ detail.description }}
+        </text>
       </view>
 
       <!-- 物品特征 -->
-      <view class="info-card" v-if="detail.features">
-        <view class="info-title">物品特征</view>
-        <text class="features">{{ detail.features }}</text>
+      <view
+        v-if="detail.features"
+        class="info-card"
+      >
+        <view class="info-title">
+          物品特征
+        </view>
+        <text class="features">
+          {{ detail.features }}
+        </text>
       </view>
 
       <!-- 时间信息 -->
       <view class="info-card">
         <view class="info-grid">
           <view class="info-item">
-            <text class="info-label">发生时间</text>
-            <text class="info-value">{{ detail.happenedTime ? formatDate(detail.happenedTime) : '-' }}</text>
+            <text class="info-label">
+              发生时间
+            </text>
+            <text class="info-value">
+              {{ detail.happenedTime ? formatDate(detail.happenedTime) : '-' }}
+            </text>
           </view>
           <view class="info-item">
-            <text class="info-label">发布时间</text>
-            <text class="info-value">{{ detail.createTime ? relativeTime(detail.createTime) : '-' }}</text>
+            <text class="info-label">
+              发布时间
+            </text>
+            <text class="info-value">
+              {{ detail.createTime ? relativeTime(detail.createTime) : '-' }}
+            </text>
           </view>
         </view>
       </view>
@@ -94,12 +157,19 @@
             class="publisher-avatar"
             mode="aspectFill"
           />
-          <view v-else class="publisher-avatar placeholder">
+          <view
+            v-else
+            class="publisher-avatar placeholder"
+          >
             <text>U</text>
           </view>
           <view class="publisher-detail">
-            <text class="publisher-name">{{ detail.publisherNickname || '匿名用户' }}</text>
-            <text class="publisher-label">发布者</text>
+            <text class="publisher-name">
+              {{ detail.publisherNickname || '匿名用户' }}
+            </text>
+            <text class="publisher-label">
+              发布者
+            </text>
           </view>
         </view>
       </view>
@@ -107,12 +177,20 @@
       <!-- 统计数据 -->
       <view class="stats-row">
         <view class="stat-item">
-          <text class="stat-value">{{ detail.viewCount || 0 }}</text>
-          <text class="stat-label">浏览</text>
+          <text class="stat-value">
+            {{ detail.viewCount || 0 }}
+          </text>
+          <text class="stat-label">
+            浏览
+          </text>
         </view>
         <view class="stat-item">
-          <text class="stat-value">{{ detail.favoriteCount || 0 }}</text>
-          <text class="stat-label">收藏</text>
+          <text class="stat-value">
+            {{ detail.favoriteCount || 0 }}
+          </text>
+          <text class="stat-label">
+            收藏
+          </text>
         </view>
       </view>
 
@@ -121,15 +199,26 @@
     </scroll-view>
 
     <!-- 空状态 -->
-    <view v-else class="empty-wrapper">
+    <view
+      v-else
+      class="empty-wrapper"
+    >
       <text>未找到该物品</text>
     </view>
 
     <!-- 底部操作栏 -->
-    <view class="bottom-bar" v-if="detail.id">
+    <view
+      v-if="detail.id"
+      class="bottom-bar"
+    >
       <view class="action-left">
-        <view class="action-item" @click="toggleFavorite">
-          <text :class="['iconfont', isFavorited ? 'icon-star-filled' : 'icon-star']">☆</text>
+        <view
+          class="action-item"
+          @click="toggleFavorite"
+        >
+          <text :class="['iconfont', isFavorited ? 'icon-star-filled' : 'icon-star']">
+            ☆
+          </text>
           <text>{{ isFavorited ? '已收藏' : '收藏' }}</text>
         </view>
       </view>
@@ -145,40 +234,66 @@
     </view>
 
     <!-- 认领申请弹窗 -->
-    <uni-popup ref="claimPopupRef" type="bottom" background-color="#fff">
+    <uni-popup
+      ref="claimPopupRef"
+      type="bottom"
+      background-color="#fff"
+    >
       <view class="claim-popup">
         <view class="popup-header">
-          <text class="popup-title">提交认领申请</text>
-          <view class="popup-close" @click="closeClaimPopup">
+          <text class="popup-title">
+            提交认领申请
+          </text>
+          <view
+            class="popup-close"
+            @click="closeClaimPopup"
+          >
             <text>x</text>
           </view>
         </view>
 
-        <scroll-view class="popup-body" scroll-y>
+        <scroll-view
+          class="popup-body"
+          scroll-y
+        >
           <!-- 认领类型 -->
           <view class="form-section">
-            <text class="form-label">认领类型</text>
+            <text class="form-label">
+              认领类型
+            </text>
             <view class="radio-group">
               <view
                 :class="['radio-item', claimForm.claimType === 'claim' ? 'active' : '']"
                 @click="claimForm.claimType = 'claim'"
               >
-                <text class="radio-icon">○</text>
-                <text class="radio-text">认领</text>
+                <text class="radio-icon">
+                  ○
+                </text>
+                <text class="radio-text">
+                  认领
+                </text>
               </view>
               <view
                 :class="['radio-item', claimForm.claimType === 'clue' ? 'active' : '']"
                 @click="claimForm.claimType = 'clue'"
               >
-                <text class="radio-icon">○</text>
-                <text class="radio-text">提供线索</text>
+                <text class="radio-icon">
+                  ○
+                </text>
+                <text class="radio-text">
+                  提供线索
+                </text>
               </view>
             </view>
           </view>
 
           <!-- 描述 -->
           <view class="form-section">
-            <text class="form-label">描述 <text class="required">*</text></text>
+            <text class="form-label">
+              描述 <text class="required">
+                *
+              </text>
+            </text>
             <textarea
               v-model="claimForm.description"
               class="form-textarea"
@@ -189,29 +304,37 @@
 
           <!-- 物品特征 -->
           <view class="form-section">
-            <text class="form-label">物品特征</text>
+            <text class="form-label">
+              物品特征
+            </text>
             <input
               v-model="claimForm.features"
               class="form-input"
               placeholder="请描述物品的具体特征"
               maxlength="200"
-            />
+            >
           </view>
 
           <!-- 联系方式 -->
           <view class="form-section">
-            <text class="form-label">联系方式 <text class="required">*</text></text>
+            <text class="form-label">
+              联系方式 <text class="required">
+                *
+              </text>
+            </text>
             <input
               v-model="claimForm.contact"
               class="form-input"
               placeholder="请输入手机号或其他联系方式"
               maxlength="100"
-            />
+            >
           </view>
 
           <!-- 凭证图片 -->
           <view class="form-section">
-            <text class="form-label">凭证图片</text>
+            <text class="form-label">
+              凭证图片
+            </text>
             <imagePicker
               v-model="claimForm.proofImages"
               :max="3"
@@ -235,7 +358,6 @@
 
 <script setup>
 import { ref, computed, onLoad } from '@dcloudio/uni-app'
-import { useLostFoundStore } from '@/stores/lost-found'
 import { useAuthStore } from '@/stores/auth'
 import { getItemDetailApi, addFavoriteApi, removeFavoriteApi } from '@/api/lost-found'
 import { submitClaimApi } from '@/api/claim'
@@ -244,7 +366,6 @@ import statusBadge from '@/components/status-badge.vue'
 import imageCarousel from '@/components/image-carousel.vue'
 import imagePicker from '@/components/image-picker.vue'
 
-const lostFoundStore = useLostFoundStore()
 const authStore = useAuthStore()
 
 const loading = ref(false)

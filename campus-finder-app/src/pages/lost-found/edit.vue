@@ -8,23 +8,33 @@
     >
       <!-- 物品类型 -->
       <view class="type-section">
-        <text class="section-label">物品类型</text>
+        <text class="section-label">
+          物品类型
+        </text>
         <view class="type-chips">
           <view
             class="chip"
             :class="{ active: formData.itemType === 'lost' }"
             @click="formData.itemType = 'lost'"
           >
-            <text class="chip-icon">😢</text>
-            <text class="chip-text">寻物</text>
+            <text class="chip-icon">
+              😢
+            </text>
+            <text class="chip-text">
+              寻物
+            </text>
           </view>
           <view
             class="chip"
             :class="{ active: formData.itemType === 'found' }"
             @click="formData.itemType = 'found'"
           >
-            <text class="chip-icon">😄</text>
-            <text class="chip-text">招领</text>
+            <text class="chip-icon">
+              😄
+            </text>
+            <text class="chip-text">
+              招领
+            </text>
           </view>
         </view>
       </view>
@@ -35,8 +45,12 @@
         class="form-item"
       >
         <view class="item-header">
-          <text class="label">分类</text>
-          <text class="required">*</text>
+          <text class="label">
+            分类
+          </text>
+          <text class="required">
+            *
+          </text>
         </view>
         <uni-data-select
           v-model="formData.categoryId"
@@ -52,8 +66,12 @@
         class="form-item"
       >
         <view class="item-header">
-          <text class="label">标题</text>
-          <text class="required">*</text>
+          <text class="label">
+            标题
+          </text>
+          <text class="required">
+            *
+          </text>
         </view>
         <uni-easyinput
           v-model="formData.title"
@@ -69,8 +87,12 @@
         class="form-item"
       >
         <view class="item-header">
-          <text class="label">描述</text>
-          <text class="required">*</text>
+          <text class="label">
+            描述
+          </text>
+          <text class="required">
+            *
+          </text>
         </view>
         <uni-easyinput
           v-model="formData.description"
@@ -87,7 +109,9 @@
         class="form-item"
       >
         <view class="item-header">
-          <text class="label">特征</text>
+          <text class="label">
+            特征
+          </text>
         </view>
         <uni-easyinput
           v-model="formData.features"
@@ -100,7 +124,9 @@
       <!-- 图片 -->
       <view class="form-item">
         <view class="item-header">
-          <text class="label">图片</text>
+          <text class="label">
+            图片
+          </text>
         </view>
         <image-picker
           v-model="formData.images"
@@ -111,8 +137,12 @@
       <!-- 位置 -->
       <view class="form-item">
         <view class="item-header">
-          <text class="label">位置</text>
-          <text class="required">*</text>
+          <text class="label">
+            位置
+          </text>
+          <text class="required">
+            *
+          </text>
         </view>
         <uni-easyinput
           v-model="formData.location"
@@ -132,8 +162,12 @@
         class="form-item"
       >
         <view class="item-header">
-          <text class="label">发生时间</text>
-          <text class="required">*</text>
+          <text class="label">
+            发生时间
+          </text>
+          <text class="required">
+            *
+          </text>
         </view>
         <uni-datetime-picker
           v-model="formData.happenedTime"
@@ -150,8 +184,12 @@
         class="form-item"
       >
         <view class="item-header">
-          <text class="label">校区</text>
-          <text class="required">*</text>
+          <text class="label">
+            校区
+          </text>
+          <text class="required">
+            *
+          </text>
         </view>
         <uni-easyinput
           v-model="formData.campus"

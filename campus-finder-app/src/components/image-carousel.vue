@@ -24,7 +24,10 @@
         />
       </swiper-item>
     </swiper>
-    <view v-if="images.length > 1" class="image-counter">
+    <view
+      v-if="images.length > 1"
+      class="image-counter"
+    >
       <text>{{ currentIndex + 1 }} / {{ images.length }}</text>
     </view>
   </view>

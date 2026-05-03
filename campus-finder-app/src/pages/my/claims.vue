@@ -34,7 +34,9 @@
           <!-- Card Header -->
           <view class="card-header">
             <view class="item-info">
-              <text class="item-title">{{ item.lostFoundTitle || '物品' }}</text>
+              <text class="item-title">
+                {{ item.lostFoundTitle || '物品' }}
+              </text>
               <view :class="['status-badge', `status-${item.status}`]">
                 <text>
                   {{ getStatusText(item.status) }}
@@ -50,7 +52,9 @@
             </view>
 
             <view class="meta-row">
-              <text class="meta-item">申请时间：{{ formatTime(item.createTime) }}</text>
+              <text class="meta-item">
+                申请时间：{{ formatTime(item.createTime) }}
+              </text>
             </view>
 
             <!-- Review Result -->

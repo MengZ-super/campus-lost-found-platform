@@ -5,9 +5,15 @@
       v-if="!authStore.isLoggedIn"
       class="login-prompt"
     >
-      <text class="login-icon">👤</text>
-      <text class="login-text">未登录</text>
-      <text class="login-hint">登录后可查看您的个人中心</text>
+      <text class="login-icon">
+        👤
+      </text>
+      <text class="login-text">
+        未登录
+      </text>
+      <text class="login-hint">
+        登录后可查看您的个人中心
+      </text>
       <view
         class="login-btn"
         @click="goToLogin"
@@ -35,8 +41,12 @@
           <text>👤</text>
         </view>
         <view class="user-info">
-          <text class="nickname">{{ authStore.nickname || '用户' }}</text>
-          <text class="username">@{{ authStore.username || 'unknown' }}</text>
+          <text class="nickname">
+            {{ authStore.nickname || '用户' }}
+          </text>
+          <text class="username">
+            @{{ authStore.username || 'unknown' }}
+          </text>
         </view>
       </view>
     </view>
@@ -47,36 +57,60 @@
         class="menu-item"
         @click="goToPage('/pages/my/publishes')"
       >
-        <text class="menu-icon">📋</text>
-        <text class="menu-text">我的发布</text>
-        <text class="menu-arrow">›</text>
+        <text class="menu-icon">
+          📋
+        </text>
+        <text class="menu-text">
+          我的发布
+        </text>
+        <text class="menu-arrow">
+          ›
+        </text>
       </view>
 
       <view
         class="menu-item"
         @click="goToPage('/pages/my/claims')"
       >
-        <text class="menu-icon">🎯</text>
-        <text class="menu-text">我的认领</text>
-        <text class="menu-arrow">›</text>
+        <text class="menu-icon">
+          🎯
+        </text>
+        <text class="menu-text">
+          我的认领
+        </text>
+        <text class="menu-arrow">
+          ›
+        </text>
       </view>
 
       <view
         class="menu-item"
         @click="goToPage('/pages/profile/edit')"
       >
-        <text class="menu-icon">✏️</text>
-        <text class="menu-text">编辑资料</text>
-        <text class="menu-arrow">›</text>
+        <text class="menu-icon">
+          ✏️
+        </text>
+        <text class="menu-text">
+          编辑资料
+        </text>
+        <text class="menu-arrow">
+          ›
+        </text>
       </view>
 
       <view
         class="menu-item menu-item-danger"
         @click="handleLogout"
       >
-        <text class="menu-icon">🚪</text>
-        <text class="menu-text">退出登录</text>
-        <text class="menu-arrow">›</text>
+        <text class="menu-icon">
+          🚪
+        </text>
+        <text class="menu-text">
+          退出登录
+        </text>
+        <text class="menu-arrow">
+          ›
+        </text>
       </view>
     </view>
   </view>

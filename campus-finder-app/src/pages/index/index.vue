@@ -2,8 +2,12 @@
   <view class="home-page">
     <!-- Header -->
     <view class="header">
-      <text class="app-name">校园失物招领</text>
-      <text class="welcome">欢迎使用</text>
+      <text class="app-name">
+        校园失物招领
+      </text>
+      <text class="welcome">
+        欢迎使用
+      </text>
     </view>
 
     <!-- Search Bar -->
@@ -11,7 +15,9 @@
       class="search-bar"
       @click="goToSearch"
     >
-      <text class="search-placeholder">搜索失物招领...</text>
+      <text class="search-placeholder">
+        搜索失物招领...
+      </text>
     </view>
 
     <!-- Quick Actions -->
@@ -20,22 +26,32 @@
         class="action-btn action-lost"
         @click="goToPublish('lost')"
       >
-        <text class="action-icon">📦</text>
-        <text class="action-text">发布失物</text>
+        <text class="action-icon">
+          📦
+        </text>
+        <text class="action-text">
+          发布失物
+        </text>
       </view>
       <view
         class="action-btn action-found"
         @click="goToPublish('found')"
       >
-        <text class="action-icon">📢</text>
-        <text class="action-text">发布招领</text>
+        <text class="action-icon">
+          📢
+        </text>
+        <text class="action-text">
+          发布招领
+        </text>
       </view>
     </view>
 
     <!-- Latest Items -->
     <view class="section">
       <view class="section-header">
-        <text class="section-title">最新物品</text>
+        <text class="section-title">
+          最新物品
+        </text>
       </view>
 
       <view

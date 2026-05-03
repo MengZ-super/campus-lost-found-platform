@@ -61,7 +61,9 @@
         v-else-if="store.error && store.items.length === 0"
         class="error-area"
       >
-        <text class="error-text">{{ store.error }}</text>
+        <text class="error-text">
+          {{ store.error }}
+        </text>
         <button
           class="retry-btn"
           size="mini"
