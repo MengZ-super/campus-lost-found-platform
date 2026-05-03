@@ -143,6 +143,93 @@
         </button>
       </view>
     </view>
+
+    <!-- 认领申请弹窗 -->
+    <uni-popup ref="claimPopupRef" type="bottom" background-color="#fff">
+      <view class="claim-popup">
+        <view class="popup-header">
+          <text class="popup-title">提交认领申请</text>
+          <view class="popup-close" @click="closeClaimPopup">
+            <text>x</text>
+          </view>
+        </view>
+
+        <scroll-view class="popup-body" scroll-y>
+          <!-- 认领类型 -->
+          <view class="form-section">
+            <text class="form-label">认领类型</text>
+            <view class="radio-group">
+              <view
+                :class="['radio-item', claimForm.claimType === 'claim' ? 'active' : '']"
+                @click="claimForm.claimType = 'claim'"
+              >
+                <text class="radio-icon">○</text>
+                <text class="radio-text">认领</text>
+              </view>
+              <view
+                :class="['radio-item', claimForm.claimType === 'clue' ? 'active' : '']"
+                @click="claimForm.claimType = 'clue'"
+              >
+                <text class="radio-icon">○</text>
+                <text class="radio-text">提供线索</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 描述 -->
+          <view class="form-section">
+            <text class="form-label">描述 <text class="required">*</text></text>
+            <textarea
+              v-model="claimForm.description"
+              class="form-textarea"
+              placeholder="请描述物品特征或您的线索"
+              maxlength="500"
+            />
+          </view>
+
+          <!-- 物品特征 -->
+          <view class="form-section">
+            <text class="form-label">物品特征</text>
+            <input
+              v-model="claimForm.features"
+              class="form-input"
+              placeholder="请描述物品的具体特征"
+              maxlength="200"
+            />
+          </view>
+
+          <!-- 联系方式 -->
+          <view class="form-section">
+            <text class="form-label">联系方式 <text class="required">*</text></text>
+            <input
+              v-model="claimForm.contact"
+              class="form-input"
+              placeholder="请输入手机号或其他联系方式"
+              maxlength="100"
+            />
+          </view>
+
+          <!-- 凭证图片 -->
+          <view class="form-section">
+            <text class="form-label">凭证图片</text>
+            <imagePicker
+              v-model="claimForm.proofImages"
+              :max="3"
+            />
+          </view>
+        </scroll-view>
+
+        <view class="popup-footer">
+          <button
+            class="submit-btn"
+            :disabled="claimSubmitting"
+            @click="submitClaim"
+          >
+            {{ claimSubmitting ? '提交中...' : '提交申请' }}
+          </button>
+        </view>
+      </view>
+    </uni-popup>
   </view>
 </template>
 
@@ -151,9 +238,11 @@ import { ref, computed, onLoad } from '@dcloudio/uni-app'
 import { useLostFoundStore } from '@/stores/lost-found'
 import { useAuthStore } from '@/stores/auth'
 import { getItemDetailApi, addFavoriteApi, removeFavoriteApi } from '@/api/lost-found'
+import { submitClaimApi } from '@/api/claim'
 import { formatDate, relativeTime } from '@/utils/date'
 import statusBadge from '@/components/status-badge.vue'
 import imageCarousel from '@/components/image-carousel.vue'
+import imagePicker from '@/components/image-picker.vue'
 
 const lostFoundStore = useLostFoundStore()
 const authStore = useAuthStore()
@@ -162,6 +251,17 @@ const loading = ref(false)
 const error = ref(null)
 const detail = ref({})
 const isFavorited = ref(false)
+
+// Claim popup
+const claimPopupRef = ref(null)
+const claimForm = ref({
+  claimType: 'claim',
+  description: '',
+  features: '',
+  contact: '',
+  proofImages: []
+})
+const claimSubmitting = ref(false)
 
 onLoad((options) => {
   if (options.id) {
@@ -220,7 +320,52 @@ const handleClaim = () => {
     uni.navigateTo({ url: '/pages/auth/login' })
     return
   }
-  uni.showToast({ title: '认领功能开发中', icon: 'none' })
+  showClaimPopup()
+}
+
+const showClaimPopup = () => {
+  claimForm.value = {
+    claimType: 'claim',
+    description: '',
+    features: '',
+    contact: '',
+    proofImages: []
+  }
+  claimPopupRef.value?.open()
+}
+
+const closeClaimPopup = () => {
+  claimPopupRef.value?.close()
+}
+
+const submitClaim = async () => {
+  if (!claimForm.value.contact) {
+    uni.showToast({ title: '请输入联系方式', icon: 'none' })
+    return
+  }
+  if (!claimForm.value.description) {
+    uni.showToast({ title: '请输入描述', icon: 'none' })
+    return
+  }
+
+  claimSubmitting.value = true
+  try {
+    await submitClaimApi({
+      lostFoundId: detail.value.id,
+      claimType: claimForm.value.claimType,
+      description: claimForm.value.description,
+      features: claimForm.value.features,
+      contact: claimForm.value.contact,
+      proofImages: claimForm.value.proofImages
+    })
+    uni.showToast({ title: '提交成功', icon: 'success' })
+    closeClaimPopup()
+    loadDetail(detail.value.id)
+  } catch (err) {
+    uni.showToast({ title: err.message || '提交失败', icon: 'none' })
+  } finally {
+    claimSubmitting.value = false
+  }
 }
 </script>
 
@@ -470,5 +615,136 @@ const handleClaim = () => {
   font-size: 28rpx;
   border-radius: 40rpx;
   border: none;
+}
+
+/* Claim Popup */
+.claim-popup {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.popup-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.popup-close {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 32rpx;
+}
+
+.popup-body {
+  flex: 1;
+  max-height: 60vh;
+  padding: 24rpx;
+}
+
+.popup-footer {
+  padding: 24rpx;
+  border-top: 1rpx solid #eee;
+}
+
+.form-section {
+  margin-bottom: 32rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.required {
+  color: #ff4d4f;
+}
+
+.radio-group {
+  display: flex;
+  gap: 32rpx;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 24rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  background: #fafafa;
+}
+
+.radio-item.active {
+  border-color: #1890ff;
+  background: #e6f7ff;
+}
+
+.radio-icon {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.radio-item.active .radio-icon {
+  color: #1890ff;
+}
+
+.radio-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.radio-item.active .radio-text {
+  color: #1890ff;
+}
+
+.form-input {
+  width: 100%;
+  padding: 16rpx 20rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 16rpx 20rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  background: #fafafa;
+  min-height: 160rpx;
+  box-sizing: border-box;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 24rpx;
+  background: #1890ff;
+  color: #ffffff;
+  font-size: 32rpx;
+  border-radius: 44rpx;
+  border: none;
+}
+
+.submit-btn[disabled] {
+  background: #ccc;
 }
 </style>
