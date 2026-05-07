@@ -82,9 +82,9 @@ public class ClaimService extends ServiceImpl<ClaimMapper, Claim> implements ISe
             throw new BusinessException(ResultCode.BUSINESS_ERROR, "不能认领自己发布的物品");
         }
 
-        // 检查是否已申请过
-        if (claimMapper.countByLostFoundIdAndUserId(lostFoundId, userId) > 0) {
-            throw new BusinessException(ResultCode.BUSINESS_ERROR, "已提交过认领申请");
+        // 检查是否已有待处理的认领申请
+        if (claimMapper.countPendingByLostFoundIdAndUserId(lostFoundId, userId) > 0) {
+            throw new BusinessException(ResultCode.BUSINESS_ERROR, "已提交过认领申请，请等待审核");
         }
 
         // 设置初始状态

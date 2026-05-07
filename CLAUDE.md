@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-与用户说中文时
+与用户沟通说中文
 
 ## 项目结构
 
@@ -25,21 +25,50 @@ campus-lost-found-platform/
 │       ├── stores/auth.js                  # Pinia 认证状态
 │       ├── views/ (auth/, lost/, user/, admin/, HomeView.vue)
 │       └── layouts/MainLayout.vue
-├── campus-finder-flutter/                  # Flutter 3.x, 端口由 Vite 代理
-│   ├── lib/
-│   │   ├── models/                         # @freezed 数据模型（必须用 abstract class）
-│   │   ├── services/                       # API 封装（Dio + ApiClient 注入）
-│   │   ├── blocs/                          # BLoC 状态管理（event/state/bloc 三元组）
-│   │   ├── pages/                          # 页面（auth/ home/ lost_found/ my/ profile/ splash/）
-│   │   ├── widgets/                        # 通用组件（item_card/ status_badge/ image_carousel 等）
-│   │   ├── config/                         # API 配置/路由/高德 Key
-│   │   └── utils/                          # 日期/校验/常量工具
-│   └── test/                               # bloc_test + mocktail 单元测试
+├── campus-finder-app/                      # UniApp + Vue 3 + uni-ui + Pinia, App 端
+│   ├── src/
+│   │   ├── api/                            # uni.request 封装 (request.js + 业务 API)
+│   │   ├── stores/                         # Pinia 状态管理 (auth / lost-found / profile)
+│   │   ├── utils/                          # 工具函数 (storage / date / validator)
+│   │   ├── components/                     # 通用组件 (item-card / status-badge / image-carousel 等)
+│   │   ├── pages/                          # 页面 (auth/ lost-found/ my/ profile/)
+│   │   ├── App.vue
+│   │   ├── main.js
+│   │   └── pages.json                      # 路由 + TabBar 配置
+│   └── tests/                              # Vitest 单元测试
 ├── CLAUDE.md
+├── docs/
+│   ├── SPEC.md                             # UniApp 开发规范
+│   └── PLAN.md                             # 20 个 Task 的实施计划
 ├── fix_script.py
 ├── generate_assets.py
 └── verify_sizes.py
 ```
+
+## 代码规范
+
+### Vue 3 管理前端
+
+- **组件风格**：Composition API + `<script setup>`，不用 Options API
+- **视图命名**：PascalCase `XxxView.vue`，按模块放 `src/views/{module}/`
+- **路由**：懒加载 `() => import(...)`，`meta: { requiresAuth, title }`，admin 路由加 `requiresAdmin`
+- **状态管理**：Pinia Composition API 写法 `defineStore('name', () => { ... })`，命名导出 `useXxxStore`
+- **API 封装**：对象字面量导出 `export const xxxApi = { ... }`，统一用 `@/utils/request`，页面不直接调 axios
+- **CSS**：scoped 样式，Element Plus 组件为主
+- **响应格式**：`{ code, message, data, timestamp }`
+
+### Spring Boot 后端
+
+- **Controller**：`@RestController` + `@RequestMapping("/api/{module}")`，`@RequiredArgsConstructor` 注入，`@Slf4j` 日志
+- **Service**：继承 `ServiceImpl<Mapper, Entity> implements IService<Entity>`，不用接口+实现分离，`@Transactional` 管事务
+- **异常处理**：`throw new BusinessException(ResultCode.XXX)` 或 `throw new BusinessException(ResultCode.XXX, "自定义消息")`
+- **响应封装**：统一 `Result<T>`，`Result.success(data)` / `Result.success("消息", data)` / `Result.error(ResultCode.XXX)`
+- **DTO**：请求用 `XxxRequest`（`@Valid` 校验），响应用 `XxxDTO`（`fromEntity()` 静态工厂转换）
+- **查询**：MyBatis-Plus `LambdaQueryWrapper`，分页用 `Page<T>`
+- **文档**：Swagger `@Operation(summary, description)` + `@Tag(name, description)`
+- **权限**：`SecurityContextHolder.getContext().getAuthentication()` 获取当前用户，Controller 内 `getCurrentUserId()` 私有方法
+- **Lombok**：`@Data`（实体/DTO）、`@RequiredArgsConstructor`（Controller/Service）、`@Slf4j`
+- **包结构**：`module/{功能}/` 下分 `controller/`、`service/`、`entity/`、`dto/`、`mapper/`
 
 ## 依赖服务（WSL Docker 容器）
 
@@ -115,54 +144,104 @@ cat path/to/script.sql | wsl -d Ubuntu-22.04 docker exec -i 1Panel-mysql-8fOV my
 
 `--default-character-set=utf8mb4` 和 `-i`（stdin 管道）两个参数缺一不可。
 
-## Flutter 开发
+## UniApp 移动端开发（App 端）
 
 ### 环境变量
 
-所有 flutter/dart 命令需要 pub 镜像：
+UniApp CLI 已在 PATH 中，直接使用 `uni` 命令：
 ```bash
-PUB_HOSTED_URL=https://pub.flutter-io.cn
+# 进入项目目录
+cd campus-finder-app
+
+# 运行到 Android 真机/模拟器
+npm run dev:app-android
+
+# 运行到 iOS 真机/模拟器（macOS）
+npm run dev:app-ios
+
+# 运行到微信小程序（后续扩展）
+npm run dev:mp-weixin
 ```
 
-flutter 路径：`/c/flutter/bin/flutter.bat`
-
-### 代码生成
+### 代码质量
 
 ```bash
-cd campus-finder-flutter && PUB_HOSTED_URL=https://pub.flutter-io.cn /c/flutter/bin/dart.bat run build_runner build
+# ESLint 检查
+npm run lint
+
+# 单元测试（Vitest）
+npm run test
 ```
 
-`--delete-conflicting-outputs` 参数已废弃，不要用。
+### 关键规范
 
-### 静态分析
+- **单位**：用 `rpx` 不用 `px`，适配多端
+- **状态管理**：Pinia Composition API 写法
+- **API 封装**：通过 `api/request.js` 统一封装，页面不直接调 `uni.request`
+- **组件**：统一用 uni-ui，按需引入
+- **响应格式**：`{ code, message, data, timestamp }`（与后端一致）
 
-```bash
-cd campus-finder-flutter && PUB_HOSTED_URL=https://pub.flutter-io.cn /c/flutter/bin/flutter.bat analyze
+### 页面路由
+
+在 `pages.json` 中声明式配置，3 个 Tab 底部导航 + 二级页面：
+- Tab 1: `pages/index/index` — 首页
+- Tab 2: `pages/lost-found/index` — 失物招领列表
+- Tab 3: `pages/my/index` — 个人中心
+- 其他: `pages/auth/login`、`pages/lost-found/detail`、`pages/lost-found/publish` 等
+
+### TabBar 图标路径注意
+
+微信小程序中 TabBar 图标路径**必须以 `/` 开头**，否则图标无法显示：
+```json
+"iconPath": "/static/tab/home.png",
+"selectedIconPath": "/static/tab/home-active.png"
 ```
 
-### freezed 3.x 关键规则
+## Git 工作流程
 
-`@freezed` 标注的类必须加 `abstract`：
-```dart
-@freezed
-abstract class Foo with _$Foo {  // ← abstract 不可省略
-  const factory Foo({...}) = _Foo;
-}
+### 分支命名
+
+- 功能分支：`ft/task-18-global-styles`（Task 编号 + 简短描述，kebab-case）
+- 修复分支：`fix/xxx-description`
+- 分支名与已有分支名冲突时，改用 `ft/` 前缀（不用 `feature/`）
+
+### 提交规范
+
+格式：`<type>: <简短描述>`
+
+类型：
+- `feat:` — 新功能
+- `fix:` — 修复 bug
+- `refactor:` — 重构
+- `test:` — 测试相关
+- `chore:` — 工具/构建/杂项
+
+示例：
+```
+feat: add global styles and spacing variables (Task 18)
+fix: correct image picker compression ratio
+test: add store unit tests for auth module
+chore: apply lint auto-fixes across all pages
 ```
 
-原因：freezed 3.x 生成的 `_$Foo` mixin 声明了抽象成员（字段 getter + toJson()），非 abstract 类无法继承。
-模型文件修改后必须重新运行 `build_runner build`。
+### 提交流程
 
-### amap_flutter_map 版本限制
+1. 在 `master` 分支上做 `git pull` 确保最新
+2. 创建新分支 `ft/task-XX-description`
+3. 开发 + 提交（每完成一个小逻辑就提交）
+4. 完成功能后 `git checkout master && git pull`
+5. 切回功能分支 rebase：`git rebase master`
+6. 推送：`git push -u origin ft/task-XX-description`
+7. 创建 PR 或直接合并到 master（若 PR 流程不强制）
 
-pub.flutter-io.cn 上 `amap_flutter_map` 最高版本为 3.0.0（`^3.1.0` 不存在）。
-`LatLng` 和 `AMapApiKey` 类在 `amap_flutter_base` 包中，需在 pubspec.yaml 中声明为直接依赖：
-```yaml
-amap_flutter_base: ^3.0.0
-amap_flutter_map: ^3.0.0
-```
+### 合并策略
 
-## Git Worktree 注意事项
+- **永远不用 `git merge master`**（防止污染历史）
+- 优先 `git rebase master` 保持线性历史
+- 已合并到 master 的功能分支应删除
+- Windows 下 `git worktree remove` 可能因文件锁失败，`--force` 可清理 git 引用但目录需手动删除
+
+### 注意事项
 
 - 分支名 `feature/xxx` 与已有分支名 `feature` 冲突时，改用 `ft/` 前缀
 - Windows 下 `git worktree remove` 可能因文件锁失败，`--force` 可清理 git 引用但目录需手动删除
